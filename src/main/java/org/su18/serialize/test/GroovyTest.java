@@ -1,22 +1,13 @@
 package org.su18.serialize.test;
 
-import groovy.lang.Closure;
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyShell;
 import org.codehaus.groovy.runtime.MethodClosure;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
 
 /**
  * @author su18
  */
 public class GroovyTest {
-
-
-	public static Closure<?> buildClosure(String string) {
-		return (Closure<?>) new GroovyShell().evaluate(string);
-	}
 
 
 	public static void main(String[] args) throws Exception {
@@ -35,13 +26,15 @@ public class GroovyTest {
 //			e.printStackTrace();
 //		}
 
-
-
-
-		MethodClosure mc = new MethodClosure(GroovyTest.buildClosure("\"open -a Calculator.app\""), "execute");
+		// 第一种写法，用 JAVA 对象的 Runtime.getRuntime() 执行 exec 方法
+		MethodClosure mc = new MethodClosure(Runtime.getRuntime(), "exec");
 		Method        m  = MethodClosure.class.getDeclaredMethod("doCall", Object.class);
 		m.setAccessible(true);
-		m.invoke(mc, new HashSet<>());
+		m.invoke(mc, "open -a Calculator.app");
+
+		// 第二种写法，用 Groovy 的 String 对象的 execute 方法执行命令
+		MethodClosure methodClosure = new MethodClosure("open -a Calculator.app", "execute");
+		methodClosure.call();
 
 	}
 }
