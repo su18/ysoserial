@@ -1,6 +1,8 @@
 package org.su18.serialize.yoserial.Utils;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import sun.misc.Unsafe;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -72,7 +74,26 @@ public class SerializeUtil {
 		Field name = TemplatesImpl.class.getDeclaredField("_name");
 		name.setAccessible(true);
 		name.set(tmpl, "su18");
+		// _tfactory 不能为空，兼容多个版本
+		Field factory = TemplatesImpl.class.getDeclaredField("_tfactory");
+		factory.setAccessible(true);
+		factory.set(tmpl, new TransformerFactoryImpl());
 
 		return tmpl;
+	}
+
+	/**
+	 * 使用 Unsafe 来绕过构造方法创建类实例
+	 *
+	 * @param clazz Class 类型
+	 * @return 返回创建的实例
+	 * @throws Exception 抛出异常
+	 */
+	public static Object createInstanceUnsafely(Class<?> clazz) throws Exception {
+		// 反射获取Unsafe的theUnsafe成员变量
+		Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+		theUnsafeField.setAccessible(true);
+		Unsafe unsafe = (Unsafe) theUnsafeField.get(null);
+		return unsafe.allocateInstance(clazz);
 	}
 }
