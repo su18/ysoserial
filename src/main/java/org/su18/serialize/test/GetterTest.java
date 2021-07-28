@@ -1,9 +1,7 @@
 package org.su18.serialize.test;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
-import org.su18.serialize.yoserial.Utils.SerializeUtil;
-
-import java.lang.reflect.Method;
+import org.su18.serialize.ysoserial.Utils.SerializeUtil;
 // For hibernate 4
 // import org.hibernate.property.BasicPropertyAccessor;
 // import org.hibernate.property.Getter;
