@@ -12,4 +12,6 @@ public interface Phone {
 	 */
 	void call();
 
+	Object callback();
+
 }

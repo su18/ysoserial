@@ -18,4 +18,10 @@ public class IPhone implements Phone {
 		System.out.println("IPhone Called");
 	}
 
+	@Override
+	public Object callback() {
+		return 1;
+	}
+
+
 }
