@@ -6,41 +6,12 @@
 
     <groupId>org.su18</groupId>
     <artifactId>ysoserial-su18</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>2.3.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.0.7.Final</version>
-        </dependency>
-
-    </dependencies>
+    <modules>
+        <module>ysoserial-learn</module>
+        <module>ysuserial</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>7</maven.compiler.source>
