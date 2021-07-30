@@ -13,9 +13,9 @@ import java.lang.reflect.Field;
  *
  * @author su18
  */
-public class FileUpload {
+public class FileUploadForWrite {
 
-	public static String fileName = "FileUpload.bin";
+	public static String fileName = "FileUploadForWrite.bin";
 
 	public static void main(String[] args) throws Exception {
 
