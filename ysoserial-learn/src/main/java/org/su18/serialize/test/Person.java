@@ -10,6 +10,10 @@ import java.io.Serializable;
  */
 public class Person implements Serializable {
 
+	static {
+		System.out.println("static call");
+	}
+
 	private String name;
 
 	private int age;
