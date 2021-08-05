@@ -110,6 +110,12 @@
             <version>8.0.27</version>
         </dependency>
 
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
