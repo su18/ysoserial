@@ -134,6 +134,12 @@
             <version>5.1.39</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
