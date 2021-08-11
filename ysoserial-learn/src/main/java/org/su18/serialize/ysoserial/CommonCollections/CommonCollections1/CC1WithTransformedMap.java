@@ -5,7 +5,7 @@ import org.apache.commons.collections.functors.ChainedTransformer;
 import org.apache.commons.collections.functors.ConstantTransformer;
 import org.apache.commons.collections.functors.InvokerTransformer;
 import org.apache.commons.collections.map.TransformedMap;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.annotation.Generated;
 import java.lang.reflect.Constructor;

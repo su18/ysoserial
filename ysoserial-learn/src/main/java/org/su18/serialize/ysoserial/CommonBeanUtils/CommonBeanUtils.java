@@ -2,7 +2,7 @@ package org.su18.serialize.ysoserial.CommonBeanUtils;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.apache.commons.beanutils.BeanComparator;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

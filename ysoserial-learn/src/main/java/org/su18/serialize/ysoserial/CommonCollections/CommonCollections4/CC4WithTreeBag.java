@@ -5,7 +5,7 @@ import org.apache.commons.collections4.Transformer;
 import org.apache.commons.collections4.bag.TreeBag;
 import org.apache.commons.collections4.comparators.TransformingComparator;
 import org.apache.commons.collections4.functors.InvokerTransformer;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Field;
 

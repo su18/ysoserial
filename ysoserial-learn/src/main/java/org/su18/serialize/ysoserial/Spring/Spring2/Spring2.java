@@ -2,7 +2,7 @@ package org.su18.serialize.ysoserial.Spring.Spring2;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.springframework.aop.framework.AdvisedSupport;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
 import java.lang.annotation.Target;

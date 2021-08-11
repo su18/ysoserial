@@ -3,8 +3,8 @@ package org.su18.serialize.ysoserial.Hibernate.Hibernate2;
 import com.sun.rowset.JdbcRowSetImpl;
 import org.hibernate.engine.spi.TypedValue;
 import org.hibernate.type.Type;
-import org.su18.serialize.ysoserial.Utils.ClassUtil;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.ClassUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;

@@ -4,7 +4,7 @@ import clojure.core$comp$fn__4727;
 import clojure.core$constantly$fn__4614;
 import clojure.inspector.proxy$javax.swing.table.AbstractTableModel$ff19274a;
 import clojure.lang.PersistentArrayMap;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.management.BadAttributeValueExpException;
 import java.lang.reflect.Field;

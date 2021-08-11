@@ -1,4 +1,4 @@
-package org.su18.serialize.ysoserial.Utils;
+package org.su18.serialize.utils;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
@@ -59,7 +59,7 @@ public class SerializeUtil {
 	 * @return 返回恶意类字节码数组
 	 */
 	public static byte[] generateEvilClassForTest() throws Exception {
-		InputStream inputStream = SerializeUtil.class.getResourceAsStream("../../test/EvilClass.class");
+		InputStream inputStream = SerializeUtil.class.getResourceAsStream("../test/EvilClass.class");
 		assert inputStream != null;
 		byte[] bytes = new byte[inputStream.available()];
 		inputStream.read(bytes);

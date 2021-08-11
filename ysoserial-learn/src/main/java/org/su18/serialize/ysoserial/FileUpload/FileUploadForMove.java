@@ -2,7 +2,7 @@ package org.su18.serialize.ysoserial.FileUpload;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.output.DeferredFileOutputStream;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.io.File;
 import java.lang.reflect.Field;

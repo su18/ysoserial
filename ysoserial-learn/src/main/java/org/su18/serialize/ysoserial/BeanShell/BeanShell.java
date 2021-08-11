@@ -3,7 +3,7 @@ package org.su18.serialize.ysoserial.BeanShell;
 
 import bsh.Interpreter;
 import bsh.XThis;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;

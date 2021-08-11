@@ -7,7 +7,7 @@ import org.apache.commons.collections4.comparators.TransformingComparator;
 import org.apache.commons.collections4.functors.ChainedTransformer;
 import org.apache.commons.collections4.functors.ConstantTransformer;
 import org.apache.commons.collections4.functors.InstantiateTransformer;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
 import java.lang.reflect.Field;

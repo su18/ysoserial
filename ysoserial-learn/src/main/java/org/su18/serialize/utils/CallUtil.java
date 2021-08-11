@@ -1,4 +1,4 @@
-package org.su18.serialize.ysoserial.Utils;
+package org.su18.serialize.utils;
 
 /**
  * @author su18

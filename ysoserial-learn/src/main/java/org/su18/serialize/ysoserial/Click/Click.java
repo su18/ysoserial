@@ -3,7 +3,7 @@ package org.su18.serialize.ysoserial.Click;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.apache.click.control.Column;
 import org.apache.click.control.Table;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

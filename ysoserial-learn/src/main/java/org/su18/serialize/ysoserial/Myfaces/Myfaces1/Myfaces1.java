@@ -5,7 +5,7 @@ import org.apache.myfaces.context.servlet.FacesContextImplBase;
 import org.apache.myfaces.el.CompositeELResolver;
 import org.apache.myfaces.el.unified.FacesELContext;
 import org.apache.myfaces.view.facelets.el.ValueExpressionMethodExpression;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;

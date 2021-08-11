@@ -2,7 +2,7 @@ package org.su18.serialize.ysoserial.Groovy;
 
 import org.codehaus.groovy.runtime.ConvertedClosure;
 import org.codehaus.groovy.runtime.MethodClosure;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;

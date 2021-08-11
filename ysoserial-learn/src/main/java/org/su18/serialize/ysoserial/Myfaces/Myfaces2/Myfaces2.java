@@ -1,7 +1,7 @@
 package org.su18.serialize.ysoserial.Myfaces.Myfaces2;
 
 import org.su18.serialize.ysoserial.Myfaces.Myfaces1.Myfaces1;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 /**
  * 来源 http://danamodio.com/appsec/research/spring-remote-code-with-expression-language-injection/

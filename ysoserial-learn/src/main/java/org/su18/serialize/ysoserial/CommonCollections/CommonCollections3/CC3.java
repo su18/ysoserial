@@ -7,7 +7,7 @@ import org.apache.commons.collections.functors.ChainedTransformer;
 import org.apache.commons.collections.functors.ConstantTransformer;
 import org.apache.commons.collections.functors.InstantiateTransformer;
 import org.apache.commons.collections.map.LazyMap;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
 import java.lang.annotation.Target;

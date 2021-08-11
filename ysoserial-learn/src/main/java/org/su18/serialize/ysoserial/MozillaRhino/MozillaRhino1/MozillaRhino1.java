@@ -2,7 +2,7 @@ package org.su18.serialize.ysoserial.MozillaRhino.MozillaRhino1;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.mozilla.javascript.*;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.management.BadAttributeValueExpException;
 import java.lang.reflect.Constructor;

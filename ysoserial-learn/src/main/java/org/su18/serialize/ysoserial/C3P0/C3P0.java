@@ -2,8 +2,8 @@ package org.su18.serialize.ysoserial.C3P0;
 
 import com.mchange.v2.c3p0.PoolBackedDataSource;
 import com.mchange.v2.c3p0.impl.PoolBackedDataSourceBase;
-import org.su18.serialize.ysoserial.Utils.ClassUtil;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.ClassUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.naming.NamingException;
 import javax.naming.Reference;

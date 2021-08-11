@@ -1,6 +1,6 @@
 package org.su18.serialize.ysoserial.URLDNS;
 
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Field;
 import java.net.URL;

@@ -3,8 +3,8 @@ package org.su18.serialize.ysoserial.MozillaRhino.MozillaRhino2;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Environment;
-import org.su18.serialize.ysoserial.Utils.ClassUtil;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.ClassUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author su18
  */
 public class MozillaRhino2 {
-	
+
 	public static void customWriteAdapterObject(Object javaObject, ObjectOutputStream out) throws IOException {
 		out.writeObject("java.lang.Object");
 		out.writeObject(new String[0]);

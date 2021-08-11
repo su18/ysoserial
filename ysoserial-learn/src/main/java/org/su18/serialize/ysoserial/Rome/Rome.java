@@ -3,7 +3,7 @@ package org.su18.serialize.ysoserial.Rome;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.syndication.feed.impl.EqualsBean;
 import com.sun.syndication.feed.impl.ObjectBean;
-import org.su18.serialize.ysoserial.Utils.SerializeUtil;
+import org.su18.serialize.utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
 import java.lang.reflect.Field;
