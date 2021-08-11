@@ -20,8 +20,6 @@ import java.util.Map;
  */
 public class CC1WithTransformedMap {
 
-	public static String fileName = "CC1withTransformedMap.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		Map hashMap = new HashMap();
@@ -45,7 +43,7 @@ public class CC1WithTransformedMap {
 		constructor.setAccessible(true);
 		InvocationHandler handler = (InvocationHandler) constructor.newInstance(Generated.class, transformedMap);
 
-		SerializeUtil.writeObjectToFile(handler, fileName);
-//		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(handler);
+//		SerializeUtil.readFileObject();
 	}
 }

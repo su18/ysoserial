@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class CC6WithHashSet {
 
-	public static String fileName = "CC6WithHashSet.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 初始化 HashMap
@@ -52,8 +50,8 @@ public class CC6WithHashSet {
 		//清空由于 hashMap.put 对 LazyMap 造成的影响
 		lazyMap.clear();
 
-		SerializeUtil.writeObjectToFile(set, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(set);
+		SerializeUtil.readFileObject();
 
 	}
 

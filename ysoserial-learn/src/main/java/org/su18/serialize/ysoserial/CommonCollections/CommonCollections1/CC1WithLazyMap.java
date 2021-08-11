@@ -19,10 +19,6 @@ import java.util.Map;
  */
 public class CC1WithLazyMap {
 
-
-	public static String fileName = "CC1withLazyMap.bin";
-
-
 	public static void main(String[] args) throws Exception {
 		// 结合 ChainedTransformer
 		ChainedTransformer chain = new ChainedTransformer(new Transformer[]{
@@ -46,8 +42,8 @@ public class CC1WithLazyMap {
 		// 使用动态代理初始化 AnnotationInvocationHandler
 		InvocationHandler invocationHandler = (InvocationHandler) constructor.newInstance(Target.class, mapProxy);
 
-		SerializeUtil.writeObjectToFile(invocationHandler, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(invocationHandler);
+		SerializeUtil.readFileObject();
 	}
 
 }

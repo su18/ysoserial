@@ -17,8 +17,6 @@ import java.util.Map;
  */
 public class CC6WithHashMap {
 
-	public static String fileName = "CC6WithHashMap.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 初始化 HashMap
@@ -57,8 +55,8 @@ public class CC6WithHashMap {
 //			}
 //		}
 
-		SerializeUtil.writeObjectToFile(hashMap, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(hashMap);
+		SerializeUtil.readFileObject();
 
 	}
 

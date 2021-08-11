@@ -15,8 +15,6 @@ import java.lang.reflect.Field;
  */
 public class FileUploadForWrite {
 
-	public static String fileName = "FileUploadForWrite.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 创建文件写入目录 File 对象，以及文件写入内容
@@ -45,8 +43,8 @@ public class FileUploadForWrite {
 		field2.setAccessible(true);
 		field2.set(diskFileItem, bytes);
 
-		SerializeUtil.writeObjectToFile(diskFileItem, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(diskFileItem);
+		SerializeUtil.readFileObject();
 	}
 
 }

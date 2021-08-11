@@ -18,8 +18,6 @@ import java.util.HashMap;
  */
 public class URLDNS3 {
 
-	public static String fileName = "urldns3.bin";
-
 	static class SilentURLStreamHandler extends URLStreamHandler {
 
 		@Override
@@ -44,8 +42,8 @@ public class URLDNS3 {
 		f.setAccessible(true);
 		f.set(url, -1);
 
-		SerializeUtil.writeObjectToFile(hashMap, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(hashMap);
+		SerializeUtil.readFileObject();
 	}
 
 }

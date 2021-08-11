@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class CC5 {
 
-	public static String fileName = "CC5.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 创建 ChainedTransformer
@@ -40,7 +38,7 @@ public class CC5 {
 		field.setAccessible(true);
 		field.set(exception, entry);
 
-		SerializeUtil.writeObjectToFile(exception, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(exception);
+		SerializeUtil.readFileObject();
 	}
 }

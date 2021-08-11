@@ -18,8 +18,6 @@ import java.util.PriorityQueue;
  */
 public class BeanShell {
 
-	public static String fileName = "BeanShell.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// compare 函数，需要接受两个参数，返回 Integer 类型
@@ -48,8 +46,8 @@ public class BeanShell {
 		field.setAccessible(true);
 		field.set(queue, comparator);
 
-		SerializeUtil.writeObjectToFile(queue, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(queue);
+		SerializeUtil.readFileObject();
 	}
 
 }

@@ -13,8 +13,6 @@ import java.util.HashMap;
  */
 public class URLDNS2 {
 
-	public static String fileName = "urldns2.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		HashMap<URL, Integer> hashMap = new HashMap<>();
@@ -28,7 +26,7 @@ public class URLDNS2 {
 			}
 		}
 
-		SerializeUtil.writeObjectToFile(hashMap, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(hashMap);
+		SerializeUtil.readFileObject();
 	}
 }

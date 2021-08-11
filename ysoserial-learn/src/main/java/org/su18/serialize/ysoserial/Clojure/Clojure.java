@@ -15,8 +15,6 @@ import java.util.HashMap;
  */
 public class Clojure {
 
-	public static String fileName = "Clojure.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 执行系统命令的两种写法，本质都是使用 java.lang.Runtime 类
@@ -54,8 +52,8 @@ public class Clojure {
 		field.set(exception, model);
 
 		// 使用 BadAttributeValueExpException toString 触发，还是会调用 hashCode 方法
-		SerializeUtil.writeObjectToFile(exception, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(exception);
+		SerializeUtil.readFileObject();
 	}
 
 }

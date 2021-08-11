@@ -15,8 +15,6 @@ import java.util.Map;
  */
 public class Groovy {
 
-	public static String fileName = "Groovy.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		//封装我们需要执行的对象
@@ -34,7 +32,7 @@ public class Groovy {
 		// 使用动态代理初始化 AnnotationInvocationHandler
 		InvocationHandler invocationHandler = (InvocationHandler) constructor.newInstance(Target.class, handler);
 
-		SerializeUtil.writeObjectToFile(invocationHandler, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(invocationHandler);
+		SerializeUtil.readFileObject();
 	}
 }

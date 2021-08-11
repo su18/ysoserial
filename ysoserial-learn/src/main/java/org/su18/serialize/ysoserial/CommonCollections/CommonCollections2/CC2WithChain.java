@@ -16,8 +16,6 @@ import java.util.PriorityQueue;
  */
 public class CC2WithChain {
 
-	public static String fileName = "CC2WithChain.bin";
-
 	public static void main(String[] args) throws Exception {
 
 		// 初始化 Transformer
@@ -37,8 +35,8 @@ public class CC2WithChain {
 		field.setAccessible(true);
 		field.set(queue, comparator);
 
-		SerializeUtil.writeObjectToFile(queue, fileName);
-		SerializeUtil.readFileObject(fileName);
+		SerializeUtil.writeObjectToFile(queue);
+		SerializeUtil.readFileObject();
 	}
 
 }
