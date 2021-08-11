@@ -140,6 +140,12 @@
             <version>1.8.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.click</groupId>
+            <artifactId>click-nodeps</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
