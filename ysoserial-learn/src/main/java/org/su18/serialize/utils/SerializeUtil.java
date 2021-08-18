@@ -54,6 +54,19 @@ public class SerializeUtil {
 		return new Object();
 	}
 
+	/**
+	 * 从文件中读取序列化对象
+	 *
+	 * @return 返回序列化对象
+	 * @throws IOException            抛出异常
+	 * @throws ClassNotFoundException 抛出异常
+	 */
+	public static Object readFileObject(String fileName) throws IOException, ClassNotFoundException {
+
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+		return ois.readObject();
+	}
+
 
 	/**
 	 * 生成测试用恶意类字节码

