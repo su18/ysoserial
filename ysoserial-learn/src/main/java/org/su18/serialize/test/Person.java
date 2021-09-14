@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Person implements Serializable {
 
 	static {
+
 		System.out.println("static call");
 	}
 
@@ -25,6 +26,10 @@ public class Person implements Serializable {
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
 		Runtime.getRuntime().exec("open -a Calculator.app");
+	}
+
+	public static String hello(String some) {
+		return some;
 	}
 
 }

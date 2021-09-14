@@ -8,7 +8,6 @@ import org.su18.serialize.utils.SerializeUtil;
 
 import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -24,9 +23,6 @@ public class AspectJWeaver {
 		String fileName    = "123.txt";
 		String filePath    = "/Users/phoebe/Downloads";
 		String fileContent = "su18 is here";
-
-		// 初始化 HashMap
-		HashMap<Object, Object> hashMap = new HashMap<>();
 
 		// 实例化  StoreableCachingMap 类
 		Class<?>       c           = Class.forName("org.aspectj.weaver.tools.cache.SimpleCache$StoreableCachingMap");
