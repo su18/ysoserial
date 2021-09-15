@@ -13,5 +13,7 @@ public interface RemoteInterface extends Remote {
 
 	public String sayHello() throws RemoteException;
 
+	public String sayHello(Object name) throws RemoteException;
+
 	public String sayGoodbye() throws RemoteException;
 }

@@ -3,8 +3,6 @@ package org.su18.serialize.rmi.server;
 import org.su18.serialize.rmi.RemoteInterface;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -21,34 +19,31 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class RemoteObject extends UnicastRemoteObject implements RemoteInterface {
 
+	private String name;
+
 	/**
 	 * 必须显示声明构造函数，并抛出异常
 	 *
 	 * @throws RemoteException 异常
 	 */
-	protected RemoteObject() throws RemoteException {
+	public RemoteObject(String name) throws RemoteException {
+		this.name = name;
 	}
 
 	@Override
 	public String sayHello() throws RemoteException {
-		return "This is RemoteObject!";
+		return "This is RemoteObject!" + name;
+	}
+
+	@Override
+	public String sayHello(Object someone) throws RemoteException {
+		return "This is RemoteObject!" + someone.toString();
 	}
 
 	@Override
 	public String sayGoodbye() throws RemoteException {
-		return "Bye~";
+		return "Bye~" + name;
 	}
 
-	public static void main(String args[]) throws Exception {
 
-		RemoteInterface remoteObject = new RemoteObject();
-
-		// sun.rmi.registry.RegistryImpl_Stub
-		Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-
-		// 使用 Naming.rebind 注册 Registry
-		// 实际调用 LocateRegistry.getRegistry()
-
-		registry.bind("remoteObject", remoteObject);
-	}
 }
