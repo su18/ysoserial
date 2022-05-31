@@ -1,8 +1,10 @@
 package org.su18.serialize.hessian.Rome;
 
+import com.rometools.rome.feed.impl.EqualsBean;
+import com.rometools.rome.feed.impl.ToStringBean;
 import com.sun.rowset.JdbcRowSetImpl;
-import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ToStringBean;
+//import com.sun.syndication.feed.impl.EqualsBean;
+//import com.sun.syndication.feed.impl.ToStringBean;
 import org.su18.serialize.utils.HessianUtils;
 
 import javax.sql.rowset.BaseRowSet;
@@ -37,11 +39,13 @@ public class Rome1 {
 
 
 		// 将 EqualsBean put 到 map 之后再反射写入 ToStringBean 避免 put 时触发
-		Field f2 = EqualsBean.class.getDeclaredField("_beanClass");
+//		Field f2 = EqualsBean.class.getDeclaredField("_beanClass");
+		Field f2 = EqualsBean.class.getDeclaredField("beanClass");
 		f2.setAccessible(true);
 		f2.set(root, BaseRowSet.class);
 
-		Field f3 = EqualsBean.class.getDeclaredField("_obj");
+//		Field f3 = EqualsBean.class.getDeclaredField("_obj");
+		Field f3 = EqualsBean.class.getDeclaredField("obj");
 		f3.setAccessible(true);
 		f3.set(root, item);
 

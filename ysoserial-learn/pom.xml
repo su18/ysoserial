@@ -26,6 +26,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>hessian-lite</artifactId>
+            <version>3.2.12</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.xbean</groupId>
             <artifactId>xbean-naming</artifactId>
             <version>4.20</version>
@@ -133,6 +139,12 @@
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.7.0</version>
         </dependency>
 
         <dependency>

@@ -1,8 +1,10 @@
 package org.su18.serialize.ysoserial.Rome;
 
+import com.rometools.rome.feed.impl.EqualsBean;
+import com.rometools.rome.feed.impl.ObjectBean;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
-import com.sun.syndication.feed.impl.EqualsBean;
-import com.sun.syndication.feed.impl.ObjectBean;
+//import com.sun.syndication.feed.impl.EqualsBean;
+//import com.sun.syndication.feed.impl.ObjectBean;
 import org.su18.serialize.utils.SerializeUtil;
 
 import javax.xml.transform.Templates;
