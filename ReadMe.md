@@ -41,7 +41,7 @@ $ java -jar ysuserial-0.1-su18-all.jar
                 | ;  :|
        _____.,-#%&$@%#&#~,._____
      _____.,[ 暖风熏得游人醉 ],._____
-     _____.,[ 只把杭州作汴州 ],._____
+     _____.,[ 直把杭州作汴州 ],._____
 [root]#~  A Mind-Blowing Tool Collected By [ su18@javaweb.org ]
 [root]#~  Shout Out to Yzmm / Shxjia / Y4er / N1nty / C0ny1 / Phith0n / Kezibei
 [root]#~  AND OF COURSE TO THE All MIGHTY @frohoff  
