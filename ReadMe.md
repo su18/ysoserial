@@ -221,19 +221,37 @@ java -jar ysuserial-0.1-su18-all.jar CommonsCollections1 'open -a Calculator.app
 
 
 
-如果使用这些利用链进行攻击，本项目内置了一些高级扩展用法，命令均使用 `EX-` 开头，具体如下：
+如果使用这些利用链进行攻击，本项目内置了一些高级扩展用法，命令均使用 `EX-` 开头，包括内存马、 NeoReg 流量隧道、命令执行回显等，具体如下：
 
-- 命令 `EX-SpringInterceptorMS`：向系统内植入 Spring 拦截器类型的内存马
-- 命令 `EX-TFMSFromJMX`：利用 JMX MBeans 向系统内植入 Tomcat Filter 型内存马
-- 命令 `EX-TFMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Filter 型内存马
-- 命令 `EX-TLMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Listener 型内存马
-- 命令 `EX-TLNeoRegFromThread`：通过线程类加载器获取指定上下文向系统内植入 NeoReg 流量隧道型内存马
+Tomcat 命令回显：
 - 命令 `EX-TomcatEcho`：通过在线程中遍历获取当前 request 来执行命令并回显
 
-- 命令 `EX-TSMSFromJMX`：利用 JMX MBeans 向系统内植入 Tomcat Servlet 型内存马
-- 命令 `EX-TSMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Tomcat Servlet 型内存马
+Tomcat Listener NeoReg 流量隧道：
+- 命令 `EX-TLNeoRegFromThread`：通过线程类加载器获取指定上下文向系统内植入 NeoReg 流量隧道型内存马
 
+内存马：
+- 命令 `EX-MS-SpringInterceptorMS`：向系统内植入 Spring 拦截器类型的内存马
+- 命令 `EX-MS-TFMSFromJMX`：利用 JMX MBeans 向系统内植入 Tomcat Filter 型内存马
+- 命令 `EX-MS-TFMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Filter 型内存马
+- 命令 `EX-MS-TLMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Listener 型内存马
+- 命令 `EX-MS-TSMSFromJMX`：利用 JMX MBeans 向系统内植入 Tomcat Servlet 型内存马
+- 命令 `EX-MS-TSMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Servlet 型内存马
+- 命令 `EX-MS-JBFMSFromContext`：通过全局上下文向系统内植入 JBoss/Wildfly Filter 型内存马
+- 命令 `EX-MS-JBSMSFromContext`：通过全局上下文向系统内植入 JBoss/Wildfly Servlet 型内存马
+- 命令 `EX-MS-JFMSFromJMX`：利用 JMX MBeans 向系统内植入 Jetty Filter 型内存马
+- 命令 `EX-MS-JSMSFromJMX`：利用 JMX MBeans 向系统内植入 Jetty Servlet 型内存马
+- 命令 `EX-MS-RFMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Resin Filter 型内存马
+- 命令 `EX-MS-RSMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Resin Servlet 型内存马
+- 命令 `EX-MS-WSFMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Websphere Filter 型内存马
 
+目前支持的直打内存马的类型包括 Tomcat、Jetty、JBoss/Wildfly、Websphere、Resin、Spring，还有以下几个暂未支持：
+- GlassFish 内嵌了 Tomcat，实现类似，稍微改改即可；
+- Apusic ≈ GlassFish，改包名；
+- BES ≈ Tomcat，改包名；
+- InforSuite ≈ Tomcat，改包名；
+- Weblogic 还未实现，后续版本随着 Weblogic 的反序列化 payload 一起添加。
+
+本工具支持的全部内存马经过测试可用，但实际受到中间件版本的限制，对于内存马的相关测试，可以参考项目 [https://github.com/su18/MemoryShell](https://github.com/su18/MemoryShell)
 
 这里就不一一测试截图了，欢迎大家进行测试，如果问题请按文档最后的联系方式联系我。
 
