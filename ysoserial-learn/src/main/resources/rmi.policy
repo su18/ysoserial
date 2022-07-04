@@ -1,3 +1,0 @@
-grant{
-    permission java.net.SocketPermission "localhost:1024-65535","accept,connect,listen";
-};
