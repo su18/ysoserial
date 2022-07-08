@@ -7,7 +7,6 @@ import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 import java.io.Serializable;
@@ -96,10 +95,5 @@ public class AspectJWeaver implements ObjectPayload<Serializable> {
 
         return map;
 
-    }
-
-    public static void main(String[] args) throws Exception {
-        args = new String[]{"ahi.txt;YWhpaGloaQ=="};
-        PayloadRunner.run(AspectJWeaver.class, args);
     }
 }

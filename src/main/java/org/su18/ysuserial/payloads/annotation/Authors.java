@@ -9,33 +9,50 @@ import java.lang.reflect.AnnotatedElement;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Authors {
-    String FROHOFF = "frohoff";
-    String PWNTESTER = "pwntester";
-    String CSCHNEIDER4711 = "cschneider4711";
-    String MBECHLER = "mbechler";
-    String JACKOFMOSTTRADES = "JackOfMostTrades";
-    String MATTHIASKAISER = "matthias_kaiser";
-    String GEBL = "gebl" ;
-    String JACOBAINES = "jacob-baines";
-    String JASINNER = "jasinner";
-    String KULLRICH = "kai_ullrich";
-    String TINT0 = "_tint0";
-    String SCRISTALLI = "scristalli";
-    String HANYRAX = "hanyrax";
-    String EDOARDOVIGNATI = "EdoardoVignati";
-    String JANG = "Jang";
-    String ARTSPLOIT = "artsploit";
 
-    String[] value() default {};
+	String FROHOFF = "frohoff";
 
-    public static class Utils {
-        public static String[] getAuthors(AnnotatedElement annotated) {
-            Authors authors = annotated.getAnnotation(Authors.class);
-            if (authors != null && authors.value() != null) {
-                return authors.value();
-            } else {
-                return new String[0];
-            }
-        }
-    }
+	String PWNTESTER = "pwntester";
+
+	String CSCHNEIDER4711 = "cschneider4711";
+
+	String MBECHLER = "mbechler";
+
+	String JACKOFMOSTTRADES = "JackOfMostTrades";
+
+	String MATTHIASKAISER = "matthias_kaiser";
+
+	String GEBL = "gebl";
+
+	String JACOBAINES = "jacob-baines";
+
+	String JASINNER = "jasinner";
+
+	String KULLRICH = "kai_ullrich";
+
+	String TINT0 = "_tint0";
+
+	String SCRISTALLI = "scristalli";
+
+	String HANYRAX = "hanyrax";
+
+	String EDOARDOVIGNATI = "EdoardoVignati";
+
+	String JANG = "Jang";
+
+	String ARTSPLOIT = "artsploit";
+
+	String[] value() default {};
+
+	class Utils {
+
+		public static String[] getAuthors(AnnotatedElement annotated) {
+			Authors authors = annotated.getAnnotation(Authors.class);
+			if (authors != null && authors.value() != null) {
+				return authors.value();
+			} else {
+				return new String[0];
+			}
+		}
+	}
 }

@@ -6,6 +6,7 @@ import java.security.Permission;
 
 @SuppressWarnings({"deprecation"})
 public class DelegateSecurityManager extends SecurityManager {
+
 	private SecurityManager securityManager;
 
 	public SecurityManager getSecurityManager() {
@@ -16,41 +17,41 @@ public class DelegateSecurityManager extends SecurityManager {
 		this.securityManager = securityManager;
 	}
 
-    //BEGIN fixes for JDK10+ compatibility
+	//BEGIN fixes for JDK10+ compatibility
 
-    @SuppressWarnings({"deprecation"})
-    //@Override
+	@SuppressWarnings({"deprecation"})
+	//@Override
 	public boolean getInCheck() {
 		//return getSecurityManager().getInCheck();
-        return false;
+		return false;
 	}
 
-    @SuppressWarnings({"deprecation"})
-    //@Override
-    public boolean checkTopLevelWindow(Object window) {
-	    //return getSecurityManager().checkTopLevelWindow(window);
-        return true;
-    }
+	@SuppressWarnings({"deprecation"})
+	//@Override
+	public boolean checkTopLevelWindow(Object window) {
+		//return getSecurityManager().checkTopLevelWindow(window);
+		return true;
+	}
 
-    @SuppressWarnings({"deprecation"})
-    //@Override
-    public void checkSystemClipboardAccess() {
-	    //getSecurityManager().checkSystemClipboardAccess();
-    }
+	@SuppressWarnings({"deprecation"})
+	//@Override
+	public void checkSystemClipboardAccess() {
+		//getSecurityManager().checkSystemClipboardAccess();
+	}
 
-    @SuppressWarnings({"deprecation"})
-    //@Override
-    public void checkAwtEventQueueAccess() {
-        //getSecurityManager().checkAwtEventQueueAccess();
-    }
+	@SuppressWarnings({"deprecation"})
+	//@Override
+	public void checkAwtEventQueueAccess() {
+		//getSecurityManager().checkAwtEventQueueAccess();
+	}
 
-    @SuppressWarnings({"deprecation"})
-    //@Override
-    public void checkMemberAccess(Class<?> clazz, int which) {
-        //getSecurityManager().checkMemberAccess(clazz, which);
-    }
+	@SuppressWarnings({"deprecation"})
+	//@Override
+	public void checkMemberAccess(Class<?> clazz, int which) {
+		//getSecurityManager().checkMemberAccess(clazz, which);
+	}
 
-    //END fixes for JDK10+ compatibility
+	//END fixes for JDK10+ compatibility
 
 	@Override
 	public Object getSecurityContext() {
@@ -152,8 +153,8 @@ public class DelegateSecurityManager extends SecurityManager {
 		getSecurityManager().checkMulticast(maddr);
 	}
 
-    @SuppressWarnings({"deprecation"})
-    @Override
+	@SuppressWarnings({"deprecation"})
+	@Override
 	public void checkMulticast(InetAddress maddr, byte ttl) {
 		getSecurityManager().checkMulticast(maddr, ttl);
 	}

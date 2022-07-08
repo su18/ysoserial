@@ -5,7 +5,7 @@ package org.su18.ysuserial.payloads.util;
  */
 public class SuClassLoader extends ClassLoader {
 
-    public SuClassLoader() {
-        super(Thread.currentThread().getContextClassLoader());
-    }
+	public SuClassLoader() {
+		super(Thread.currentThread().getContextClassLoader());
+	}
 }

