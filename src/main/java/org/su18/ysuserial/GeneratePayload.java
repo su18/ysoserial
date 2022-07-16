@@ -63,7 +63,7 @@ public class GeneratePayload {
 		System.err.println("[root]#~  A Mind-Blowing Tool Collected By [ su18@javaweb.org ]");
 		System.err.println("[root]#~  Shout Out to Yzmm / Shxjia / Y4er / N1nty / C0ny1 / Phith0n / Kezibei");
 		System.err.println("[root]#~  AND OF COURSE TO THE All MIGHTY @frohoff  ");
-		System.err.println("[root]#~  Usage: java -jar ysuserial-0.3-su18-all.jar [payload] '[command]'");
+		System.err.println("[root]#~  Usage: java -jar ysuserial-0.4-su18-all.jar [payload] '[command]'");
 		System.err.println("[root]#~  Available payload types:");
 
 		final List<Class<? extends ObjectPayload>> payloadClasses =
