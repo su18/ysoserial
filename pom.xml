@@ -4,7 +4,7 @@
 
 	<groupId>ysuserial</groupId>
 	<artifactId>ysuserial</artifactId>
-	<version>0.3-su18</version>
+	<version>0.4-su18</version>
 	<packaging>jar</packaging>
 
 	<name>ysuserial</name>
@@ -129,7 +129,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.19.0-GA</version>
+			<version>3.29.0-GA</version>
 		</dependency>
 		<dependency>
 			<groupId>com.nqzero</groupId>
@@ -275,11 +275,6 @@
 			<groupId>rhino</groupId>
 			<artifactId>js</artifactId>
 			<version>1.7R2</version>
-		</dependency>
-		<dependency>
-		<groupId>javassist</groupId>
-		<artifactId>javassist</artifactId>
-		<version>3.12.0.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld</groupId>
